@@ -1,0 +1,128 @@
+<ul class="side-menu-navigation nav flex-column">
+  <a class="menu-link nav-link" [routerLinkActive]="['active']" [routerLink]="['/home/dashboard']">
+    <img src="../../../../assets/pics/favicon-removebg-preview.png" style="height: 50%; width: 50%; ">
+    <span class="menu-item-title" style="font-size: larger;">&nbsp;&nbsp;&nbsp;IFAQUOTEWORKS</span>
+  </a>
+  <br>
+  <li class="menu-item expandable-item nav-item" [routerLinkActive]="['active']">
+    <mat-expansion-panel [expanded]="false">
+      <mat-expansion-panel-header class="menu-link">
+        <div class="item-header-content">
+          <mat-panel-title>
+            <i class="fa fa-users"></i>
+            <span class="menu-item-title">&nbsp;&nbsp;&nbsp;CRM</span>
+          </mat-panel-title>
+        </div>
+      </mat-expansion-panel-header>
+      <li class="menu-item nav-item" [routerLinkActive]="['active']">
+        <a class="menu-link nav-link" [routerLinkActive]="['active']" [routerLink]="['/crm/customer-list']">
+          <i class="menu-item-icon"></i>
+          <span class="menu-item-title">Customers</span>
+        </a>
+      </li>
+      <li class="menu-item nav-item" [routerLinkActive]="['active']">
+        <a class="menu-link nav-link" [routerLinkActive]="['active']" [routerLink]="['/crm/quotation-list']">
+          <i class="menu-item-icon"></i>
+          <span class="menu-item-title">Quotations</span>
+        </a>
+      </li>
+      <li class="menu-item nav-item" [routerLinkActive]="['active']">
+        <a class="menu-link nav-link" [routerLinkActive]="['active']" [routerLink]="['/crm/sales-order-list']">
+          <i class="menu-item-icon"></i>
+          <span class="menu-item-title">Sales Orders</span>
+        </a>
+      </li>
+      <li class="menu-item nav-item" [routerLinkActive]="['active']">
+        <a class="menu-link nav-link" [routerLinkActive]="['active']" [routerLink]="['/crm/performa-invoice-list']">
+          <i class="menu-item-icon"></i>
+          <span class="menu-item-title">Performa Invoice</span>
+        </a>
+      </li>
+      <br>
+    </mat-expansion-panel>
+  </li>
+
+  <li class="menu-item expandable-item nav-item" [routerLinkActive]="['active']">
+    <mat-expansion-panel [expanded]="false">
+      <mat-expansion-panel-header class="menu-link">
+        <div class="item-header-content">
+          <mat-panel-title>
+            <i class="fa fa-truck"></i>
+            <span class="menu-item-title">&nbsp;&nbsp;&nbsp;Supply Chain</span>
+          </mat-panel-title>
+        </div>
+      </mat-expansion-panel-header>
+      <li class="menu-item nav-item" [routerLinkActive]="['active']">
+        <a class="menu-link nav-link" [routerLinkActive]="['active']" [routerLink]="['/supply-chain/supplier-list']">
+          <i class="menu-item-icon"></i>
+          <span class="menu-item-title">Suppliers</span>
+        </a>
+      </li>
+      <li class="menu-item nav-item" [routerLinkActive]="['active']">
+        <a class="menu-link nav-link" [routerLinkActive]="['active']" [routerLink]="['/supply-chain/purchase-order-list']">
+          <i class="menu-item-icon"></i>
+          <span class="menu-item-title">Purchase Orders</span>
+        </a>
+      </li>
+      <li class="menu-item nav-item" [routerLinkActive]="['active']">
+        <a class="menu-link nav-link" [routerLinkActive]="['active']" [routerLink]="['/supply-chain/grn-list']">
+          <i class="menu-item-icon"></i>
+          <span class="menu-item-title">Goods Recieve Notes</span>
+        </a>
+      </li>
+      <br>
+    </mat-expansion-panel>
+  </li>
+
+  <li class="menu-item expandable-item nav-item" [routerLinkActive]="['active']">
+    <mat-expansion-panel [expanded]="false">
+      <mat-expansion-panel-header class="menu-link">
+        <div class="item-header-content">
+          <mat-panel-title>
+            <i class="fa fa-archive"></i>
+            <span class="menu-item-title">&nbsp;&nbsp;&nbsp;Inventory Control</span>
+          </mat-panel-title>
+        </div>
+      </mat-expansion-panel-header>
+      <li class="menu-item nav-item" [routerLinkActive]="['active']">
+        <a class="menu-link nav-link" [routerLinkActive]="['active']" [routerLink]="['/inventory/product-list']">
+          <i class="menu-item-icon"></i>
+          <span class="menu-item-title">Products</span>
+        </a>
+      </li>
+      <li class="menu-item nav-item" [routerLinkActive]="['active']">
+        <a class="menu-link nav-link" [routerLinkActive]="['active']" [routerLink]="['/inventory/service-list']">
+          <i class="menu-item-icon"></i>
+          <span class="menu-item-title">Services</span>
+        </a>
+      </li>
+      <li class="menu-item nav-item" [routerLinkActive]="['active']">
+        <a class="menu-link nav-link" [routerLinkActive]="['active']" [routerLink]="['/inventory/lookup']">
+          <i class="menu-item-icon"></i>
+          <span class="menu-item-title">Lookup Tables</span>
+        </a>
+      </li>
+      <br>
+    </mat-expansion-panel>
+  </li>
+  
+  <li class="menu-item expandable-item nav-item" [routerLinkActive]="['active']">
+    <mat-expansion-panel [expanded]="false">
+      <mat-expansion-panel-header class="menu-link">
+        <div class="item-header-content">
+          <mat-panel-title>
+            <i class="fa fa-sitemap"></i>
+            <span class="menu-item-title">&nbsp;&nbsp;&nbsp;Analysis</span>
+          </mat-panel-title>
+        </div>
+      </mat-expansion-panel-header>
+      <li class="menu-item nav-item" [routerLinkActive]="['active']">
+        <a class="menu-link nav-link" [routerLinkActive]="['active']" [routerLink]="['/analysis/reports-list']">
+          <i class="menu-item-icon"></i>
+          <span class="menu-item-title">Reports</span>
+        </a>
+      </li>
+      <br>
+    </mat-expansion-panel>
+  </li>
+</ul>

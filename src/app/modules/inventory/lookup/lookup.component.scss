@@ -1,0 +1,59 @@
+.full-width {
+    width: 100%;
+    height: 40%;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+
+.container-fluid {
+  color: darkblue; 
+  background:rgb(251, 252, 249);
+  }
+
+  p {
+    font-family: Lato;
+  }
+  table {
+    width: 100%;
+    margin: auto;
+    margin-top: 25px;
+  }
+  .btn-edit {
+    text-align: right;
+  }
+
+  .table-header {
+    width: 90%;
+    margin: auto;
+    text-align: right;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .button-add-row {
+    background: #1b9e1b;
+    color: #ffffff;
+  }
+  
+  .button-remove-rows {
+    background: red;
+    color: #ffffff;
+    margin-right: 5px;
+  }
+  
+  .button-remove {
+    color: red;
+  }
+  
+  ::ng-deep .mat-form-field-infix {
+    width: 100% !important;
+  }
+  
+  .form-input {
+    padding-right: 5px;
+  }

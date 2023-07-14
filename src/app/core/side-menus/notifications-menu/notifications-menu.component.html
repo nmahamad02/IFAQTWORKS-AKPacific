@@ -1,0 +1,50 @@
+<div class="menu-secondary-actions">
+  <button type="button" class="close-menu-btn btn btn-link" (click)="closeAltMenu()">
+    <i class="fas fa-times"></i>
+  </button>
+</div>
+
+<div class="menu-heading">
+  <h3 class="heading-title">Notifications</h3>
+  <!-- <button type="button" class="clear-notifications-btn">Mark all as read</button> -->
+</div>
+<!--
+<div class="menu-illustration-wrapper">
+  <cc-aspect-ratio [ratio]="{w: 430, h: 225}">
+    <cc-image-shell class="menu-illustration" animation="spinner" [src]="'/assets/illustrations/notifications-illustration.svg'" [alt]="'Notifications Illustration'"></cc-image-shell>
+  </cc-aspect-ratio>
+</div>
+-->
+
+<ul class="notifications-list list-group list-group-flush">
+  <li class="notification-item list-group-item">
+    <div class="notification-info">
+      <span class="user-name">Near Expiry Quotations</span>
+      <span class="notification-message"></span>
+    </div>
+  </li>
+</ul>
+
+<hr>
+
+<ul class="notifications-list list-group list-group-flush">
+  <li class="notification-item list-group-item">
+    <div class="notification-info">
+      <span class="user-name">Pending Purchase Orders</span>
+      <span class="notification-message"></span>
+    </div>
+  </li>
+</ul>
+
+<hr>
+
+<ul class="notifications-list list-group list-group-flush">
+  <li class="notification-item list-group-item">
+    <div class="notification-info">
+      <span class="user-name">Pending Sales Orders</span>
+      <span class="notification-message"></span>
+    </div>
+  </li>
+</ul>
+
+<hr>
