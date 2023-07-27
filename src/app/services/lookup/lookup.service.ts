@@ -146,7 +146,6 @@ export class LookupService {
     })
   }
 
-
   getBrand(){
     return this.http.get(this.url + '/lookup/brand').pipe<Brand[]>(map((data: any) => data.recordset));
   }
@@ -185,13 +184,16 @@ export class LookupService {
     })
   }
 
-
   getSubcategory(){
     return this.http.get(this.url + '/lookup/subcategory').pipe<Brand[]>(map((data: any) => data.recordset));
   }
 
   getSubcategoryDetails(code:string){
     return this.http.get(this.url + '/lookup/subcategory/check/' + code)
+  }  
+  
+  getSubcategoryDetailsFromCategory(code:string){
+    return this.http.get(this.url + '/lookup/subcategory/category/' + code)
   }
 
   postSubcategory(subcategoryId: string, subcategoryCode: string, subcategoryName: string, subcategoryDetails: string, categoryId: string) {

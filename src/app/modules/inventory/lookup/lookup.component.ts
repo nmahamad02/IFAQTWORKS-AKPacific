@@ -9,6 +9,7 @@ import { Subcategory, SubcategoryColumns } from '../../../models/subcategory';
 import { Location, LocationColumns } from '../../../models/location';
 
 import { LookupService } from 'src/app/services/lookup/lookup.service';
+import { MatSnackBar } from '@angular/material';
 @Component({
   selector: 'app-lookup',
   templateUrl: './lookup.component.html',
@@ -49,7 +50,7 @@ export class LookupComponent implements OnInit {
   locationList: any[] = [];
   locationDataSource = new MatTableDataSource<Location>();
 
-  constructor(private lookUpService: LookupService) {}
+  constructor(private lookUpService: LookupService, private _snackBar: MatSnackBar) {}
 
   ngOnInit() {
     this.lookUpService.getUsers().subscribe((res: any) => {
@@ -133,14 +134,17 @@ export class LookupComponent implements OnInit {
       if(res.recordset.length === 0) {
         this.lookUpService.postManufacturer(row.MANUFACTURER_ID,row.MANUFACTURER_CD,row.MANUFACTURER_NAME,row.PHONE1)
         row.isEdit = !row.isEdit
+        this._snackBar.open("Data Successfully Inserted!", "OK");
       } else {
         this.lookUpService.updateManufacturer(row.MANUFACTURER_ID,row.MANUFACTURER_CD,row.MANUFACTURER_NAME,row.PHONE1)
         row.isEdit = !row.isEdit
+        this._snackBar.open("Data Successfully Updated!", "OK");
       }
     }, (err: any) => {
       console.log(err)
       this.lookUpService.updateManufacturer(row.MANUFACTURER_ID,row.MANUFACTURER_CD,row.MANUFACTURER_NAME,row.PHONE1)
       row.isEdit = !row.isEdit
+      this._snackBar.open("Data Successfully Inserted!", "OK");
     })
   }
 
@@ -166,14 +170,17 @@ export class LookupComponent implements OnInit {
       if(res.recordset.length === 0) {
         this.lookUpService.postCategory(row.CATEGORY_ID,row.CATEGORY_CD,row.CATEGORY_NAME,row.CATEGORY_DETAILS)
         row.isEdit = !row.isEdit
+        this._snackBar.open("Data Successfully Inserted!", "OK");
       } else {
         this.lookUpService.updateCategory(row.CATEGORY_ID,row.CATEGORY_CD,row.CATEGORY_NAME,row.CATEGORY_DETAILS)
         row.isEdit = !row.isEdit
+        this._snackBar.open("Data Successfully Updated!", "OK");
       }
     }, (err: any) => {
       console.log(err)
       this.lookUpService.updateCategory(row.CATEGORY_ID,row.CATEGORY_CD,row.CATEGORY_NAME,row.CATEGORY_DETAILS)
       row.isEdit = !row.isEdit
+      this._snackBar.open("Data Successfully Inserted!", "OK");
     })
   }
 
@@ -200,14 +207,17 @@ export class LookupComponent implements OnInit {
       if(res.recordset.length === 0) {
         this.lookUpService.postBrand(row.BRAND_ID,row.BRAND_CD,row.BRAND_NAME,row.MANUFACTURER_CD)
         row.isEdit = !row.isEdit
+        this._snackBar.open("Data Successfully Inserted!", "OK");
       } else {
         this.lookUpService.updateBrand(row.BRAND_ID,row.BRAND_CD,row.BRAND_NAME,row.MANUFACTURER_CD)
         row.isEdit = !row.isEdit
+        this._snackBar.open("Data Successfully Updated!", "OK");
       }
     }, (err: any) => {
       console.log(err)
       this.lookUpService.updateBrand(row.BRAND_ID,row.BRAND_CD,row.BRAND_NAME,row.MANUFACTURER_CD)
       row.isEdit = !row.isEdit
+      this._snackBar.open("Data Successfully Inserted!", "OK");
     })
     console.log(row)
   }
@@ -234,14 +244,17 @@ export class LookupComponent implements OnInit {
       if(res.recordset.length === 0) {
         this.lookUpService.postSubcategory(String(row.SUBCATEGORY_ID),row.SUBCATEGORY_CD,row.SUBCATEGORY_NAME,row.SUBCATEGORY_DESCRIPTION,row.CATEGORY_ID)
         row.isEdit = !row.isEdit
+        this._snackBar.open("Data Successfully Inserted!", "OK");
       } else {
         this.lookUpService.updateSubcategory(String(row.SUBCATEGORY_ID),row.SUBCATEGORY_CD,row.SUBCATEGORY_NAME,row.SUBCATEGORY_DESCRIPTION,row.CATEGORY_ID)
         row.isEdit = !row.isEdit
+        this._snackBar.open("Data Successfully Updated!", "OK");
       }
     }, (err: any) => {
       console.log(err)
       this.lookUpService.updateSubcategory(String(row.SUBCATEGORY_ID),row.SUBCATEGORY_CD,row.SUBCATEGORY_NAME,row.SUBCATEGORY_DESCRIPTION,row.CATEGORY_ID)
       row.isEdit = !row.isEdit
+      this._snackBar.open("Data Successfully Inserted!", "OK");
     })
     console.log(row)
   }
@@ -269,14 +282,17 @@ export class LookupComponent implements OnInit {
       if(res.recordset.length === 0) {
         this.lookUpService.postLocation(row.LOCATIONID,row.LOCATIONNAME)
         row.isEdit = !row.isEdit
+        this._snackBar.open("Data Successfully Inserted!", "OK");
       } else {
         this.lookUpService.updateLocation(row.LOCATIONID,row.LOCATIONNAME)
         row.isEdit = !row.isEdit
+        this._snackBar.open("Data Successfully Updated!", "OK");
       }
     }, (err: any) => {
       console.log(err)
       this.lookUpService.updateLocation(row.LOCATIONID,row.LOCATIONNAME)
       row.isEdit = !row.isEdit
+      this._snackBar.open("Data Successfully Inserted!", "OK");
     })
     console.log(row)
   }

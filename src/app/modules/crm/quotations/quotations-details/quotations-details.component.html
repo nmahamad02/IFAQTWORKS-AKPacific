@@ -1,1 +1,43 @@
-<p>quotations-details works!</p>
+<div class="container-fluid">
+    <div class="row no-gutters">
+      <div class="visualization-heading col-12">
+        <div class="heading-info row">
+          <div class="col-6">                
+            <h3 class="heading-title">Quotation Details</h3>
+          </div>
+          <div class="col-6">
+            <div class="row">
+                <div class="col">
+                    <button class="btn-primary text-white btn btn-block btn-sm"  title="New Quotation"> <!-- (click)="newForm()" -->
+                        <mat-icon>add</mat-icon> 
+                    </button>
+                </div>
+                <div class="col">
+                    <button class="btn-info text-white btn btn-block btn-sm"  title="Print Quotation"> <!-- (click)="printForm()" -->
+                        <mat-icon>play_for_work</mat-icon> 
+                    </button>
+                </div>
+                <div class="col">
+                    <button class="btn-success text-white btn btn-block btn-sm"  title="Submit Quotation"> <!-- (click)="submitForm()" -->
+                        <mat-icon>note_add</mat-icon>  
+                    </button>
+                </div>
+                <div class="col">
+                    <button class="btn-danger text-white btn btn-block btn-sm"  title="Refresh form"> <!-- (click)="refreshForm()" -->
+                        <mat-icon>refresh</mat-icon> 
+                    </button> 
+                </div>
+                <div class="col">
+                    <button class="btn-dark text-white btn btn-block btn-sm" [routerLink]="['/crm/quotation-list']" title="Return to Quotation List">
+                        <mat-icon>arrow_back</mat-icon> 
+                    </button>
+                </div>
+            </div>
+        </div>
+        </div>
+      </div>
+    </div>  
+    <div class="row">
+
+    </div>  
+</div>

@@ -1,0 +1,220 @@
+<div class="container-fluid">
+    <div class="row no-gutters">
+        <div class="visualization-heading col-12">
+            <div class="heading-info row">
+                <div class="col-8">                
+                    <h3 class="heading-title">Contact Details</h3>
+                </div>
+                <div class="col-4">
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn-primary text-white btn btn-block btn-sm" (click)="newForm()" title="New Contact">
+                                <mat-icon>add</mat-icon> 
+                            </button>
+                        </div>
+                        <div class="col">
+                            <button class="btn-success text-white btn btn-block btn-sm" (click)="submitForm()" title="Submit Contact">
+                                <mat-icon>note_add</mat-icon>  
+                            </button>
+                        </div>
+                        <div class="col">
+                            <button class="btn-danger text-white btn btn-block btn-sm" (click)="refreshForm()" title="Refresh form">
+                                <mat-icon>refresh</mat-icon> 
+                            </button> 
+                        </div>
+                        <div class="col">
+                            <button class="btn-dark text-white btn btn-block btn-sm" [routerLink]="['/crm/contact-list']" title="Return to Contact List">
+                                <mat-icon>arrow_back</mat-icon> 
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="col-12">
+                <form [formGroup]="contactForm" class="form-container">
+                    <div class="row">
+                        <div class="col-3">
+                            <mat-form-field class="full-width">
+                                <mat-label>Contact ID</mat-label>
+                                <input matInput rquired formControlName="contactId">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-9">
+                            <mat-form-field class="full-width">
+                                <mat-label>Contact Name</mat-label>
+                                <input matInput required formControlName="contactPerson">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <mat-form-field class="full-width">
+                                <mat-label>Phone 1</mat-label>
+                                <input matInput formControlName="contactPhone1" >
+                            </mat-form-field>
+                        </div>
+                        <div class="col-4">
+                            <mat-form-field class="full-width">
+                                <mat-label>Phone 2</mat-label>
+                                <input matInput formControlName="contactPhone2" >
+                            </mat-form-field>
+                        </div>
+                        <div class="col-4">
+                            <mat-form-field class="full-width">
+                                <mat-label>Email</mat-label>
+                                <input matInput  formControlName="contactEmail">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <mat-form-field class="full-width">
+                                <mat-label>Address 1</mat-label>
+                                <input matInput required formControlName="contactAddress1">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-4">
+                            <mat-form-field class="full-width">
+                                <mat-label>Address 2</mat-label>
+                                <input matInput required formControlName="contactAddress2" >
+                            </mat-form-field>
+                        </div>
+                        <div class="col-4">
+                            <mat-form-field class="full-width">
+                                <mat-label>Address 3</mat-label>
+                                <input matInput required formControlName="contactAddress3" >
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <mat-tab-group>
+                        <mat-tab label="Customer/Supplier Details">
+                            <br>
+                            <div class="row">
+                                <div class="col-4">
+                                    <mat-form-field class="full-width">
+                                        <mat-label >Customer Code </mat-label>
+                                        <input matInput #pcode formControlName="pcode" matInput required
+                                        (keydown.f2)="getCustomerDetails(pcode.value)" >
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-4">
+                                    <mat-form-field class="full-width">
+                                        <mat-label >Name</mat-label>
+                                        <input #name formControlName="custName" matInput
+                                        (keydown.f2)="getCustomerDetails(name.value)">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-4">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>CR/CPR</mat-label>
+                                        <input formControlName="custCR" matInput readonly>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>TAX NO</mat-label>
+                                        <input formControlName="custTaxNo" matInput readonly>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-3">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Phone 1</mat-label>
+                                        <input formControlName="custPhone1" matInput readonly>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-3">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Phone 2</mat-label>
+                                        <input formControlName="custPhone2" matInput readonly>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-3">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Email</mat-label>
+                                        <input formControlName="custEmail" matInput readonly>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Address 1</mat-label>
+                                        <input formControlName="custAdd1" matInput readonly>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-4">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Address 2</mat-label>
+                                        <input formControlName="custAdd2" matInput readonly>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-4">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Address 3</mat-label>
+                                        <input formControlName="custAdd3" matInput readonly>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </form>
+            </div>
+
+            <div class="col-12">
+                <ng-template #custLookupDialog 
+                style="width: 60%;">
+                    <h3 matDialogTitle>
+                        <b>Look up Customers: {{ custArr.length }}</b>
+                    </h3>
+                    <hr>
+                    <div mat-dialog-content>
+                        <table mat-table 
+                        [dataSource]="custDataSource" 
+                        class="mat-elevation-z8" 
+                        style="width: 65vw; height: 50vh;">
+
+                        <ng-container matColumnDef="PCODE">
+                            <th mat-header-cell 
+                            *matHeaderCellDef> PCode</th>
+                            <td mat-cell 
+                            *matCellDef="let cust"> {{ cust.PCODE }} </td>
+                        </ng-container> 
+                        
+                        <ng-container matColumnDef="CUST_NAME">
+                            <th mat-header-cell 
+                            *matHeaderCellDef> Name </th>
+                            <td mat-cell 
+                            *matCellDef="let cust"> {{ cust.CUST_NAME }} </td>
+                        </ng-container> 
+                        
+                        <ng-container matColumnDef="TAX_1_NO">
+                            <th mat-header-cell 
+                            *matHeaderCellDef> Tax Number </th>
+                            <td mat-cell 
+                            *matCellDef="let cust"> {{ cust.TAX_1_NO }} </td>
+                        </ng-container>
+
+                            <tr mat-header-row 
+                            *matHeaderRowDef="custDisplayedColumns"></tr>
+                            <tr mat-row 
+                            *matRowDef="let row; columns: custDisplayedColumns;  let i= index"
+                            [ngClass]="{'highlight': selectedRowIndex == i}"
+                            (click)="highlight(i)"
+                            tabindex="999"
+                            (keydown.arrowdown)="arrowDownEvent(selectedRowIndex)"
+                            (keydown.arrowup)="arrowUpEvent(selectedRowIndex)" 
+                            (keydown.enter)="onViewCellClicked(custArr[selectedRowIndex])" ></tr>
+                        </table>
+                    </div>
+                    <mat-dialog-actions align="end">
+                        <button mat-button 
+                        matDialogClose="close">Close</button>
+                    </mat-dialog-actions>
+                </ng-template>
+            </div>
+        </div>
+    </div>    
+</div>

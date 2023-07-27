@@ -18,7 +18,7 @@ export class UploadService {
     });
     const fileName = 'images/' + file.name;
     const params = {
-      Bucket: 'ifamygate-floatingcity',
+      Bucket: 'ifaqtworks-akpacific',
       Key: fileName,
       Body: file,
       ACL: 'public-read',
@@ -54,7 +54,7 @@ export class UploadService {
     });
     const fileName = 'documents/' + file.name;
     const params = {
-      Bucket: 'ifamygate-floatingcity',
+      Bucket: 'ifaqtworks-akpacific',
       Key: fileName,
       Body: file,
       ACL: 'public-read',

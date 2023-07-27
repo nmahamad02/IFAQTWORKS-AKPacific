@@ -1,1 +1,344 @@
-<p>products-details works!</p>
+<div class="container-fluid">
+    <div class="row no-gutters">
+        <div class="visualization-heading col-12">
+            <div class="heading-info row">
+                <div class="col-8">                
+                    <h3 class="heading-title">Product / Service Details</h3>
+                </div>
+                <div class="col-4">
+                    <div class="row">
+                        <div class="col"> 
+                            <button class="btn-primary text-white btn btn-block btn-sm" (click)="newForm()" title="New Product / Service">
+                                <mat-icon>add</mat-icon> 
+                            </button>
+                        </div>
+                        <div class="col">
+                            <button class="btn-success text-white btn btn-block btn-sm" (click)="submitForm()" title="Submit Product / Service">
+                                <mat-icon>note_add</mat-icon>  
+                            </button>
+                        </div>
+                        <div class="col">
+                            <button class="btn-danger text-white btn btn-block btn-sm" (click)="refreshForm()" title="Refresh form">
+                                <mat-icon>refresh</mat-icon> 
+                            </button> 
+                        </div>
+                        <div class="col">
+                            <button class="btn-dark text-white btn btn-block btn-sm" [routerLink]="['/inventory/product-list']" title="Return to Product / Service List">
+                                <mat-icon>arrow_back</mat-icon> 
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="col-12">
+                <form [formGroup]="prodForm" class="form-container">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="row">
+                                <div class="col-3">
+                                    <mat-form-field class="full-width">
+                                        <mat-label >Product Code </mat-label>
+                                        <input matInput #pcode formControlName="pcode" matInput required
+                                        (keydown.enter)="getData(pcode.value)" >
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-6">
+                                    <mat-form-field class="full-width">
+                                        <mat-label >Description</mat-label>
+                                        <input formControlName="description" matInput required>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-3">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Barcode</mat-label>
+                                        <input formControlName="barcode" matInput required>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Product Category</mat-label>
+                                        <mat-select #catId formControlName="categoryId">
+                                            <mat-option *ngFor="let type of categoryList" [value]="type.CATEGORY_ID">
+                                                {{ type.CATEGORY_CD }} - {{ type.CATEGORY_NAME }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field> 
+                                </div>
+                                <div class="col-4">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Subcategory</mat-label>
+                                        <mat-select formControlName="subCategoryId">
+                                            <mat-option *ngFor="let type of subCategoryList" [value]="type.SUBCATEGORY_ID">
+                                                {{ type.SUBCATEGORY_CD }} - {{ type.SUBCATEGORY_NAME }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-4">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Supplier</mat-label>
+                                        <mat-select formControlName="supplierId">
+                                            <mat-option *ngFor="let type of supplierList" [value]="type.PCODE">
+                                                {{ type.CUST_NAME }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Manufacturer</mat-label>
+                                        <mat-select formControlName="manufacturerId">
+                                            <mat-option *ngFor="let type of manufacturerList" [value]="type.MANUFACTURER_CD">
+                                                {{ type.MANUFACTURER_NAME }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field> 
+                                </div>
+                                <div class="col-3">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Brand</mat-label>
+                                        <mat-select formControlName="brand">
+                                            <mat-option *ngFor="let type of brandList" [value]="type.BRAND_CD">
+                                                {{ type.BRAND_NAME }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-3">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Model</mat-label>
+                                        <input formControlName="model" matInput>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-3">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Dealer / Distributer</mat-label>
+                                        <input formControlName="dealer" matInput>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Remarks</mat-label>
+                                        <input formControlName="remarks" matInput>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                        <div class="col-4">
+                            <carousel [slides]="slides"></carousel>
+                        </div>
+                    </div>
+                    <mat-tab-group backgroundColor="warn" color="primary">
+                        <mat-tab label="Financial Details">
+                            <br>
+                            <div class="row">
+                                <div class="col-4">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Cost Price</mat-label>
+                                        <input formControlName="costPrice" matInput>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-4">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Retail Price</mat-label>
+                                        <input formControlName="retailPrice" matInput>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-4">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Dealer Price</mat-label>
+                                        <input formControlName="dealerPrice" matInput>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Quantity On Hand</mat-label>
+                                        <input formControlName="qoh" matInput>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-4">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Quantity On Order</mat-label>
+                                        <input formControlName="qoo" matInput>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-4">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Reorder Quantity</mat-label>
+                                        <input formControlName="reQty" matInput>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </mat-tab>   
+                        <mat-tab label="Location-wise Stock">
+                            <br>
+                            <table class="table table-borderless table-hover table-smtable-responsive-xxl" formArrayName="locationStock">
+                                <thead>
+                                    <tr class="table-reflow" style="background-color: rgb(2, 46, 82); color: white;">
+                                        <th style="width: 25%;">
+                                            Location
+                                        </th>
+                                        <th style="width: 17.5%;">
+                                            Opening Quantity
+                                        </th>
+                                        <th style="width: 17.5%;">
+                                            Total In
+                                        </th>
+                                        <th style="width: 17.5%;">
+                                            Total Out
+                                        </th>
+                                        <th style="width: 17.5%;">
+                                            Current Quantity
+                                        </th>
+                                        <th style="width: 5%;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr #locStock *ngFor="let lC of locStock.controls; let i = index;" [formGroupName]="i">
+                                        <td>
+                                            <select class="form-control form-control-sm" formControlName="prodLocation" readonly>
+                                                <option *ngFor="let loc of locationList" [value]="loc.LOCATIONID">
+                                                    {{ loc.LOCATIONID }} - {{ loc.LOCATIONNAME }}
+                                                </option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input class="form-control form-control-sm" type="text" formControlName="prodOpeningQty">
+                                        </td>
+                                        <td>
+                                            <input class="form-control form-control-sm" type="text" formControlName="prodTotalIn" readonly>
+                                        </td>
+                                        <td>
+                                            <input class="form-control form-control-sm" type="text" formControlName="prodTotalOut" readonly>
+                                        </td>
+                                        <td>
+                                            <input class="form-control form-control-sm" type="text" formControlName="prodCurrentQty" readonly>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-danger" type="button" (click)="deleteLocation(i)"> &#10005; </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button class="btn btn-success" type="button" (click)="addLocation()"> &#43; </button>
+                        </mat-tab>                       
+                        <mat-tab label="Images">
+                            <br>
+                            <ng-container formArrayName="images">
+                                <div class="row">
+                                    <div class="col-4" *ngFor="let img of images.controls; let i = index" [formGroupName]="i">
+                                        <mat-card>
+                                            <mat-card-content>
+                                                <div class="col-12">
+                                                    <mat-form-field class="full-width"> 
+                                                        <mat-label>Name</mat-label>
+                                                        <input type="text" formControlName="prodImageSource" matInput>
+                                                    </mat-form-field>                                                       
+                                                </div>
+                                                <div class="col-12">
+                                                    <mat-form-field class="full-width"> 
+                                                        <mat-select formControlName="prodImageType">
+                                                            <mat-option> ----- </mat-option>
+                                                            <mat-option value="FULLVIEW">Full View</mat-option>
+                                                            <mat-option value="FRONTVIEW">Front View</mat-option>
+                                                            <mat-option value="TOPVIEW">Top View</mat-option>
+                                                            <mat-option value="SIDEVIEW">Side View</mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>                                                       
+                                                </div>
+                                                <div class="col-12">
+                                                     <img [src]="images.at(i).value.prodImageSrc" style="height: 100%; width: 100%;">
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-9">
+                                                        <input id="prodImagesSource" type="file" class="form-control" (change)="onFileChange($event,'I')">
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <button class="btn-danger btn text-white btn-block" title="Cancel this image" (click)="deleteImage(i)">
+                                                            <mat-icon>delete</mat-icon> 
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </mat-card-content>
+                                        </mat-card>
+                                    </div>
+                                    <div class="col-1">
+                                        <mat-card>
+                                            <mat-card-content>
+                                                <h1 class="heading-title" (click)="addImage()">+</h1>
+                                            </mat-card-content>
+                                        </mat-card>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </mat-tab>                        
+                        <mat-tab label="Associated Documents">
+                            <br>
+                            <ng-container formArrayName="documents">
+                                <div class="row">
+                                    <div class="col-4" *ngFor="let doc of documents.controls; let i = index" [formGroupName]="i">
+                                        <mat-card>
+                                            <mat-card-content>
+                                                <div class="col-12">
+                                                    <mat-form-field class="full-width"> 
+                                                        <mat-label>Name</mat-label>
+                                                        <input type="text" formControlName="prodDocumentSource" matInput>
+                                                    </mat-form-field>                                                       
+                                                </div>
+                                                <div class="col-12">
+                                                    <mat-form-field class="full-width"> 
+                                                        <mat-select formControlName="prodDocumentType">
+                                                            <mat-option> ----- </mat-option>
+                                                            <mat-option value="BROCHURE">Brochure</mat-option>
+                                                            <mat-option value="WARRANTY">Warranty Card</mat-option>
+                                                            <mat-option value="SPECIFIC">Specification</mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>                                                       
+                                                </div>
+                                                <div class="col-12">
+                                                     <pdf-viewer [src]="documents.at(i).value.prodDocumentUrl" [original-size]="false" style="height: 100%; width: 100%;"></pdf-viewer>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <input id="prodDocumentSource" type="file" class="form-control" (change)="onFileChange($event,'D')">
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <button class="btn-danger btn text-white btn-block" title="Cancel this document" (click)="deleteDocument(i)">
+                                                            <mat-icon>delete</mat-icon> 
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <button class="btn-success btn text-white btn-block" title="View document" (click)="goToLink(documents.at(i).value.prodDocumentUrl)">
+                                                            <mat-icon>arrow_right</mat-icon> 
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </mat-card-content>
+                                        </mat-card>
+                                    </div>
+                                    <div class="col-1">
+                                        <mat-card>
+                                            <mat-card-content>
+                                                <h1 class="heading-title" (click)="addDocument()">+</h1>
+                                            </mat-card-content>
+                                        </mat-card>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </mat-tab>
+                    </mat-tab-group>
+                </form>
+            </div>
+        </div>
+    </div>    
+</div>

@@ -2,14 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductsListComponent } from './products/products-list/products-list.component';
 import { ProductsDetailsComponent } from './products/products-details/products-details.component';
-import { ServicesListComponent } from './services/services-list/services-list.component';
-import { ServiceDetailsComponent } from './services/service-details/service-details.component';
 import { RouterModule } from '@angular/router';
 import { LookupComponent } from './lookup/lookup.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatIconModule, MatTabsModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatTableModule, MatButtonModule, MatCardModule, MatSelectModule, MatPaginatorModule, MatDividerModule, MatSortModule } from '@angular/material';
+import { MatIconModule, MatTabsModule, MatFormFieldModule, MatInputModule, MatSnackBarModule, MatDatepickerModule, MatTableModule, MatButtonModule, MatCardModule, MatSelectModule, MatPaginatorModule, MatDividerModule, MatSortModule } from '@angular/material';
 import { ChartsModule } from 'ng2-charts';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { HomeModule } from '../home/home.module';
 
 export const inventoryRoutes = [
   {
@@ -21,14 +20,6 @@ export const inventoryRoutes = [
     component: ProductsDetailsComponent
   },
   {
-    path: 'service-list',
-    component: ServicesListComponent
-  },
-  {
-    path: 'service/details/:id',
-    component: ServiceDetailsComponent
-  },
-  {
     path: 'lookup',
     component: LookupComponent
   },
@@ -38,10 +29,10 @@ export const inventoryRoutes = [
   declarations: [
     ProductsListComponent, 
     ProductsDetailsComponent, 
-    ServicesListComponent, 
-    ServiceDetailsComponent, LookupComponent
+    LookupComponent
   ],
   imports: [
+    HomeModule,
     MatIconModule,
     CommonModule,
     ChartsModule,
@@ -50,6 +41,7 @@ export const inventoryRoutes = [
     MatInputModule,
     MatDatepickerModule,
     MatTableModule,
+    MatSnackBarModule,
     MatButtonModule,
     MatCardModule,
     MatSelectModule,

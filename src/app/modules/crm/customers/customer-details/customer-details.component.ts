@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { FinanceService } from 'src/app/services/finance/finance.service';
 
@@ -13,7 +14,7 @@ export class CustomerDetailsComponent implements OnInit {
 
   public custForm: FormGroup;
 
-  constructor(private financeService: FinanceService, private route: ActivatedRoute) { 
+  constructor(private financeService: FinanceService, private route: ActivatedRoute,  private _snackBar: MatSnackBar) { 
     this.custForm = new FormGroup({
       pcode: new FormControl('', [ Validators.required]),
       custName: new FormControl('', [ Validators.required]),
@@ -46,6 +47,7 @@ export class CustomerDetailsComponent implements OnInit {
   }
 
   getData(pcode: string) {
+    this.refreshForm()
     this.financeService.getCustomerDetailFromPcode(String(this.currentYear), pcode).subscribe((res: any) => {
       console.log(res)
       this.financeService.getPartyDetailFromPCODE(pcode).subscribe((resp: any) => {
@@ -70,6 +72,21 @@ export class CustomerDetailsComponent implements OnInit {
           contactAddress1: resp.recordset[0].ADD1,
           contactAddress2: resp.recordset[0].ADD2,
           contactAddress3: resp.recordset[0].ADD3,
+        });
+      }, (err: any) =>{
+        console.log(err)
+        this.custForm.patchValue({
+          pcode: res.recordset[0].PCODE,
+          custName: res.recordset[0].CUST_NAME,
+          custCR: res.recordset[0].CR_CPR,
+          custStatus: res.recordset[0].STATUS,
+          custTaxNo: res.recordset[0].TAX_1_NO,
+          custPhone1: res.recordset[0].PHONE1,
+          custPhone2: res.recordset[0].PHONE2,
+          custEmail: res.recordset[0].EMAIL,
+          custAdd1: res.recordset[0].ADD1,
+          custAdd2: res.recordset[0].ADD2,
+          custAdd3: res.recordset[0].ADD3,
         });
       })
     })
@@ -123,6 +140,8 @@ export class CustomerDetailsComponent implements OnInit {
       console.log(err)
       this.financeService.postContact(data.contactId,data.contactPerson,'C',data.contactAddress1,data.contactAddress2,data.contactAddress3,data.contactPhone1,data.contactPhone2,data.contactEmail,data.pcode)
     })
+    this._snackBar.open("Data Successfully Updated!", "OK");
+    this.getData(data.pcode);
   }  
 
   copyToContact() {

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { FinanceService } from 'src/app/services/finance/finance.service';
 
@@ -13,7 +14,7 @@ export class SuppliersDetailsComponent implements OnInit {
 
   public custForm: FormGroup;
 
-  constructor(private financeService: FinanceService, private route: ActivatedRoute) { 
+  constructor(private financeService: FinanceService, private route: ActivatedRoute, private _snackBar: MatSnackBar) { 
     this.custForm = new FormGroup({
       pcode: new FormControl('', [ Validators.required]),
       custName: new FormControl('', [ Validators.required]),
@@ -46,6 +47,7 @@ export class SuppliersDetailsComponent implements OnInit {
   }
 
   getData(pcode: string) {
+    this.refreshForm()
     this.financeService.getSupplierDetailFromPcode(String(this.currentYear), pcode).subscribe((res: any) => {
       console.log(res)
       this.financeService.getPartyDetailFromPCODE(pcode).subscribe((resp: any) => {
@@ -72,6 +74,7 @@ export class SuppliersDetailsComponent implements OnInit {
           contactAddress3: resp.recordset[0].ADD3,
         });
       }, (err: any) => {
+        console.log(err)
         this.custForm.patchValue({
           pcode: res.recordset[0].PCODE,
           custName: res.recordset[0].CUST_NAME,
@@ -94,7 +97,7 @@ export class SuppliersDetailsComponent implements OnInit {
       console.log(res)
       this.financeService.getMaxParty().subscribe((resp: any) => {
         console.log(resp)
-        const pcode = 'L101-000'+res.recordset[0].COUNT
+        const pcode = 'L012-000'+res.recordset[0].COUNT
         const partyid = Number(resp.recordset[0].COUNT)+1
         this.custForm = new FormGroup({
           pcode: new FormControl(pcode, [ Validators.required]),
@@ -137,6 +140,8 @@ export class SuppliersDetailsComponent implements OnInit {
       console.log(err)
       this.financeService.postContact(data.contactId,data.contactPerson,'S',data.contactAddress1,data.contactAddress2,data.contactAddress3,data.contactPhone1,data.contactPhone2,data.contactEmail,data.pcode)
     })
+    this._snackBar.open("Data Successfully Updated!", "OK");
+    this.getData(data.pcode);
   }  
 
   copyToContact() {

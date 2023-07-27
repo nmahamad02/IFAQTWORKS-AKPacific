@@ -6,9 +6,11 @@ import { QuotationsListComponent } from './quotations/quotations-list/quotations
 import { QuotationsDetailsComponent } from './quotations/quotations-details/quotations-details.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatCardModule, MatDatepickerModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatInputModule, MatPaginatorModule, MatSelectModule, MatSortModule, MatTableModule, MatTabsModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatDialogModule, MatDatepickerModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatInputModule, MatPaginatorModule, MatSelectModule, MatSortModule, MatTableModule, MatTabsModule, MatSnackBarModule } from '@angular/material';
 import { ChartsModule } from 'ng2-charts';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { ContactListComponent } from './contacts/contact-list/contact-list.component';
+import { ContactDetailsComponent } from './contacts/contact-details/contact-details.component';
 
 export const crmRoutes = [
   {
@@ -18,6 +20,14 @@ export const crmRoutes = [
   {
     path: 'customer/details/:id',
     component: CustomerDetailsComponent
+  },
+  {
+    path: 'contact-list',
+    component: ContactListComponent
+  },
+  {
+    path: 'contact/details/:id',
+    component: ContactDetailsComponent
   },
   {
     path: 'quotation-list',
@@ -34,7 +44,9 @@ export const crmRoutes = [
     CustomerListComponent, 
     CustomerDetailsComponent, 
     QuotationsListComponent, 
-    QuotationsDetailsComponent
+    QuotationsDetailsComponent, 
+    ContactListComponent, 
+    ContactDetailsComponent
   ],
   imports: [
     MatIconModule,
@@ -43,10 +55,12 @@ export const crmRoutes = [
     MatTabsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSnackBarModule,
     MatDatepickerModule,
     MatTableModule,
     MatButtonModule,
     MatCardModule,
+    MatDialogModule,
     MatSelectModule,
     MatPaginatorModule,
     MatDividerModule,

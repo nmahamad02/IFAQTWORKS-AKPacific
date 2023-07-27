@@ -27,6 +27,10 @@ export class FinanceService {
 
   getCustomerCount(){
     return this.http.get(this.url + '/coa/getCustomerCount')
+  }    
+  
+  searchCustomer(code: string){
+    return this.http.get(this.url + '/coa/searchCustomer/' + code)
   }  
 
   getParty(){

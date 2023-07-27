@@ -4,7 +4,7 @@ import { SuppliersListComponent } from './suppliers/suppliers-list/suppliers-lis
 import { SuppliersDetailsComponent } from './suppliers/suppliers-details/suppliers-details.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatCardModule, MatDatepickerModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatInputModule, MatPaginatorModule, MatSelectModule, MatSortModule, MatTableModule, MatTabsModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatDatepickerModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatInputModule, MatPaginatorModule, MatSelectModule, MatSnackBarModule, MatSortModule, MatTableModule, MatTabsModule } from '@angular/material';
 import { ChartsModule } from 'ng2-charts';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 
@@ -29,6 +29,7 @@ export const crmRoutes = [
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,
+    MatSnackBarModule,
     MatTableModule,
     MatButtonModule,
     MatCardModule,

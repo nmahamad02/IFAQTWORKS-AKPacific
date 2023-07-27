@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ChartsModule, ThemeService } from 'ng2-charts';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatIconModule } from '@angular/material';
+import { MatIconModule, MatSnackBarModule } from '@angular/material';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
@@ -20,7 +20,7 @@ import { MatSortModule } from "@angular/material/sort";
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AccountComponent } from './account/account.component';
-
+import { CarouselComponent } from './carousel/carousel.component';
 
 export const homeRoutes = [
   {
@@ -36,7 +36,8 @@ export const homeRoutes = [
 @NgModule({
   declarations: [
     DashboardComponent, 
-    AccountComponent
+    AccountComponent,
+    CarouselComponent
   ],
   imports: [
     CommonModule,
@@ -48,6 +49,7 @@ export const homeRoutes = [
     ReactiveFormsModule,
     MatInputModule,
     MatCardModule,
+    MatSnackBarModule,
     MatSelectModule,
     MatDividerModule,
     MatPaginatorModule,
@@ -56,7 +58,10 @@ export const homeRoutes = [
     MatSortModule,
     MatButtonModule,
     MatTabsModule,
-    RouterModule.forChild(homeRoutes)
+    RouterModule.forChild(homeRoutes),
+  ],
+  exports: [
+    CarouselComponent
   ],
   providers: [
     ThemeService

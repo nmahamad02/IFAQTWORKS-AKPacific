@@ -7,8 +7,13 @@ import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/
 })
 export class DashboardComponent implements OnInit {
   
+  public slides = [
+    { src: "https://ifaqtworks-akpacific.s3.me-south-1.amazonaws.com/images/akpacific.jpg" },
+    { src: "https://ifaqtworks-akpacific.s3.me-south-1.amazonaws.com/images/image005.png" },
+    { src: "https://ifaqtworks-akpacific.s3.me-south-1.amazonaws.com/images/imgNaN.png" },
+  ];
 
-  videoSource = "https://ifamygate-floatingcity.s3.me-south-1.amazonaws.com/information/FC-Walkthrough.mov"
+  videoSource = "https://ifaqtworks-akpacific.s3.me-south-1.amazonaws.com/info/QTWorks-AKPacific.mov"
 
   ngOnInit() {
 

@@ -3,32 +3,32 @@
         <div class="visualization-heading col-12">
             <div class="heading-info row">
                 <div class="col-6">                
-                    <h2 class="heading-title">Customer Details</h2>
+                    <h3 class="heading-title">Customer Details</h3>
                 </div>
                 <div class="col-6">
                     <div class="row">
                         <div class="col">
-                            <button class="btn-primary text-white btn btn-block" (click)="newForm()" title="New Customer">
+                            <button class="btn-primary text-white btn btn-block btn-sm" (click)="newForm()" title="New Customer">
                                 <mat-icon>add</mat-icon> 
                             </button>
                         </div>
                         <div class="col">
-                            <button class="btn-info text-white btn btn-block" (click)="copyToContact()" title="Copy to Contact">
+                            <button class="btn-warning text-white btn btn-block btn-sm" (click)="copyToContact()" title="Copy to Contact">
                                 <mat-icon>play_for_work</mat-icon> 
                             </button>
                         </div>
                         <div class="col">
-                            <button class="btn-success text-white btn btn-block" (click)="submitForm()" title="Submit Customer">
+                            <button class="btn-success text-white btn btn-block btn-sm" (click)="submitForm()" title="Submit Customer">
                                 <mat-icon>note_add</mat-icon>  
                             </button>
                         </div>
                         <div class="col">
-                            <button class="btn-danger text-white btn btn-block" (click)="refreshForm()" title="Refresh form">
+                            <button class="btn-danger text-white btn btn-block btn-sm" (click)="refreshForm()" title="Refresh form">
                                 <mat-icon>refresh</mat-icon> 
                             </button> 
                         </div>
                         <div class="col">
-                            <button class="btn-warning text-white btn btn-block" [routerLink]="['/crm/customer-list']" title="Return to Customer List">
+                            <button class="btn-dark text-white btn btn-block btn-sm" [routerLink]="['/crm/customer-list']" title="Return to Customer List">
                                 <mat-icon>arrow_back</mat-icon> 
                             </button>
                         </div>
@@ -116,6 +116,7 @@
                     </div>
                     <mat-tab-group>
                         <mat-tab label="Contact Details">
+                            <br>
                             <div class="row">
                                 <div class="col-3">
                                     <mat-form-field class="full-width">
