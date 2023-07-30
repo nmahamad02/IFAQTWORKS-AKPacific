@@ -14,6 +14,10 @@ export class ProductsService {
     return this.http.get(this.url + '/products/' + year)
   }
 
+  searchProduct(code: string){
+    return this.http.get(this.url + '/products/searchProduct/' + code)
+  } 
+
   getProduct(pcode: string, year: string) { 
     return this.http.get(this.url + '/product/' + pcode + '/' + year)
   }  

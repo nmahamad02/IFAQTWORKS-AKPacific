@@ -1,43 +1,474 @@
 <div class="container-fluid">
     <div class="row no-gutters">
-      <div class="visualization-heading col-12">
-        <div class="heading-info row">
-          <div class="col-6">                
-            <h3 class="heading-title">Quotation Details</h3>
-          </div>
-          <div class="col-6">
-            <div class="row">
-                <div class="col">
-                    <button class="btn-primary text-white btn btn-block btn-sm"  title="New Quotation"> <!-- (click)="newForm()" -->
-                        <mat-icon>add</mat-icon> 
-                    </button>
+        <div class="visualization-heading col-12">
+            <div class="heading-info row">
+                <div class="col-6">                
+                    <h3 class="heading-title">Quotation Details</h3>
                 </div>
-                <div class="col">
-                    <button class="btn-info text-white btn btn-block btn-sm"  title="Print Quotation"> <!-- (click)="printForm()" -->
-                        <mat-icon>play_for_work</mat-icon> 
-                    </button>
-                </div>
-                <div class="col">
-                    <button class="btn-success text-white btn btn-block btn-sm"  title="Submit Quotation"> <!-- (click)="submitForm()" -->
-                        <mat-icon>note_add</mat-icon>  
-                    </button>
-                </div>
-                <div class="col">
-                    <button class="btn-danger text-white btn btn-block btn-sm"  title="Refresh form"> <!-- (click)="refreshForm()" -->
-                        <mat-icon>refresh</mat-icon> 
-                    </button> 
-                </div>
-                <div class="col">
-                    <button class="btn-dark text-white btn btn-block btn-sm" [routerLink]="['/crm/quotation-list']" title="Return to Quotation List">
-                        <mat-icon>arrow_back</mat-icon> 
-                    </button>
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn-primary text-white btn btn-block btn-sm"  title="New Quotation" (click)="newForm()">
+                                <mat-icon>add</mat-icon> 
+                            </button>
+                        </div>
+                        <div class="col">
+                            <button class="btn-info text-white btn btn-block btn-sm"  title="Print Quotation"> <!-- (click)="printForm()" -->
+                                <mat-icon>play_for_work</mat-icon> 
+                            </button>
+                        </div>
+                        <div class="col">
+                            <button class="btn-success text-white btn btn-block btn-sm"  title="Submit Quotation" (click)="submitForm()"> 
+                                <mat-icon>note_add</mat-icon>  
+                            </button>
+                        </div>
+                        <div class="col">
+                            <button class="btn-danger text-white btn btn-block btn-sm"  title="Refresh form" (click)="refreshForm()">
+                                <mat-icon>refresh</mat-icon> 
+                            </button> 
+                        </div>
+                        <div class="col">
+                            <button class="btn-dark text-white btn btn-block btn-sm" [routerLink]="['/crm/quotation-list']" title="Return to Quotation List">
+                                <mat-icon>arrow_back</mat-icon> 
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        </div>
-      </div>
     </div>  
-    <div class="row">
+    <hr>
+    <div class="col-12">
+        <form [formGroup]="quotForm" class="form-container">
+            <div class="row">
+                <div class="col-7">
+                    <div class="row">
+                        <div class="col-4">
+                            <mat-form-field class="full-width">
+                                <mat-label >Quotation Number </mat-label>
+                                <input matInput #quotNo formControlName="quotNo" matInput required
+                                (keydown.enter)="getQuotationDetails(quotNo.value)" >
+                            </mat-form-field>
+                        </div>
+                        <div class="col-4">
+                            <mat-form-field class="full-width"> 
+                                <mat-label >Quotation Date</mat-label>
+                                <input type="text" formControlName="quotDate" matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-4">
+                            <mat-form-field class="full-width"> 
+                                <mat-label >Due Date</mat-label>
+                                <input matInput [matDatepicker]="expDatePicker" formControlName="quotExpDate">
+                                <mat-datepicker-toggle matSuffix [for]="expDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #expDatePicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-9">
+                            <mat-form-field class="full-width"> 
+                                <mat-label >Subject</mat-label>
+                                <input type="text" formControlName="subject" matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-3">
+                            <mat-form-field class="full-width">
+                                <mat-label >Status</mat-label>
+                                <mat-select formControlName="quotStatus">
+                                    <mat-option value="O">Open</mat-option>
+                                    <mat-option value="A">Approved</mat-option>
+                                    <mat-option value="R">Revised</mat-option>
+                                    <mat-option value="E">Expired</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <mat-form-field class="full-width"> 
+                                <mat-label >Remarks</mat-label>
+                                <input type="text" formControlName="remarks" matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-6">
+                            <mat-form-field class="full-width"> 
+                                <mat-label >Description</mat-label>
+                                <input type="text" formControlName="description" matInput>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <mat-divider [vertical]="true"></mat-divider>
+                <div class="col">
+                    <div class="row">
+                        <div class="col-4">
+                            <mat-form-field class="full-width">
+                                <mat-label>Customer Code</mat-label>
+                                <input #pcode formControlName="pcode" matInput required (keydown.f2)="lookupCustomerDetails(pcode.value)">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-8">
+                            <mat-form-field class="full-width"> 
+                                <mat-label >Customer Name</mat-label>
+                                <input #name type="text" formControlName="custName" matInput (keydown.f2)="lookupCustomerDetails(name.value)">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <mat-form-field class="full-width"> 
+                                <mat-label >Address 1</mat-label>
+                                <input type="text" formControlName="custAdd1" matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-4">
+                            <mat-form-field class="full-width"> 
+                                <mat-label >Address 2</mat-label>
+                                <input type="text" formControlName="custAdd2" matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-4">
+                            <mat-form-field class="full-width"> 
+                                <mat-label >Address 3</mat-label>
+                                <input type="text" formControlName="custAdd3" matInput>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <mat-form-field class="full-width"> 
+                                <mat-label >Phone 1</mat-label>
+                                <input type="text" formControlName="custPhone1" matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-4">
+                            <mat-form-field class="full-width"> 
+                                <mat-label >Phone 2</mat-label>
+                                <input type="text" formControlName="custPhone2" matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-4">
+                            <mat-form-field class="full-width"> 
+                                <mat-label >Email</mat-label>
+                                <input type="text" formControlName="custEmail" matInput>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-12">
+                    <table class="table table-borderless table-hover table-responsive-xxl" formArrayName="itemArr">
+                        <thead>
+                            <tr class="table-reflow" style="background-color: rgb(2, 46, 82); color: white;">
+                                <th style="width: 5%;"></th>
+                                <th style="width: 15%;">Product</th>
+                                <th style="width: 40%;">Description</th>
+                                <th style="width: 10%;">Unit</th>
+                                <th style="width: 10%;">Quantity</th>      
+                                <th style="width: 15%;">Net Value</th>
+                                <th style="width: 5%;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let rp of prodItem?.controls; let i = index;" [formGroupName]="i" >
+                                <td>
+                                    <button class="btn btn-light" type="button" (click)="getProductDetails(i)">&#9432;</button>
+                                </td>
+                                <td>
+                                    <input #prodCode class="form-control form-control-sm" type="text" formControlName="prodCode" title="Press fn + F2 to open Product search" (keydown.f2)="lookupProductDetails(prodCode.value,i)">
+                                </td>
+                                <td>
+                                    <textarea #prodDesc class="form-control form-control-sm" formControlName="prodDesc" title="Press fn + F2 to open Product search" (keydown.f2)="lookupProductDetails(prodDesc.value,i)">
+                                    </textarea>
+                                </td>
+                                <td>
+                                    <select class="form-control form-control-sm" formControlName="prodUnit">
+                                        <option value="PCS"> Pieces </option>
+                                        <option value="NOS"> Numbers </option>
+                                        <option value="BOX"> Boxes </option>
+                                        <option value="DOZ"> Dozens </option>
+                                        <option value="LTR"> Litres </option>
+                                        <option value="PACKS"> Packs </option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input class="form-control form-control-sm" type="text" formControlName="prodQty" >
+                                </td>
+                                <td>
+                                    <input class="form-control form-control-sm" type="text" formControlName="netValue" (keydown.f2)="lookupPriceDialog(i)" (valueChange)="calibrateTotal()">
+                                </td>
+                                <td>
+                                    <button class="btn btn-danger" type="button" (click)="deleteProductItem(i)">&#10005;</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn btn-success" type="button" (click)="addProductItem()">&#43;</button>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-8"></div>
+                        <div class="col-4">
+                            <div class="row">
+                                <div class="col-6">
+                                    <h6 style="color: darkblue;">Total:</h6>
+                                    <h6 style="color: darkblue;">Discount:</h6>
+                                    <h6 style="color: darkblue;">VAT:</h6>
+                                    <hr>
+                                    <h5 style="color: darkblue;">Grand Total:</h5>
+                                </div>                                    
+                                <div class="col-6" style="float: right;">
+                                    <h6 style="color: darkblue;">AED {{ mQtnTotal | number : '1.2' }}</h6>
+                                    <h6 style="color: darkblue;">AED {{ mQtnDisc | number : '1.2'}}</h6>
+                                    <h6 style="color: darkblue;">AED {{ mQtnVAT | number : '1.2'}}</h6>
+                                    <hr>
+                                    <h5 style="color: darkblue;">AED {{ mQtnGTotal | number : '1.2'}}</h5>
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <ng-template #priceLookUpDialog  style="width: 80%;">
+                    <h3 matDialogTitle>
+                        <b>Manage Prices</b>
+                    </h3>
+                    <hr>
+                    <form [formGroup]="valueForm" class="form-container">
+                        <div class="row">
+                            <div class="col-2">
+                                <mat-form-field class="full-width"> 
+                                    <mat-label >Index</mat-label>
+                                    <input type="text" formControlName="index" matInput readonly>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-4">
+                                <mat-form-field class="full-width"> 
+                                    <mat-label >Product Code</mat-label>
+                                    <input type="text" formControlName="prodCode" matInput readonly>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-6">
+                                <mat-form-field class="full-width"> 
+                                    <mat-label >Product Description</mat-label>
+                                    <input type="text" formControlName="prodDesc" matInput readonly>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <mat-form-field class="full-width"> 
+                                    <mat-label >Quantity</mat-label>
+                                    <input type="text" formControlName="quantity" matInput>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-4">
+                                <mat-form-field class="full-width"> 
+                                    <mat-label >Unit Price</mat-label>
+                                    <input type="text" formControlName="unitPrice" matInput>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-4">
+                                <mat-form-field class="full-width"> 
+                                    <mat-label >Value</mat-label>
+                                    <input type="text" formControlName="value" matInput readonly>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">
+                                <mat-form-field class="full-width"> 
+                                    <mat-label >Discount %</mat-label>
+                                    <input type="text" formControlName="discPercentage" matInput (change)="calcDiscount()">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-3">
+                                <mat-form-field class="full-width"> 
+                                    <mat-label >Discount Amount</mat-label>
+                                    <input type="text" formControlName="discount" matInput readonly>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-3">
+                                <mat-form-field class="full-width"> 
+                                    <mat-label >Amount after discount</mat-label>
+                                    <input type="text" formControlName="amount" matInput readonly>
+                                </mat-form-field>
+                            </div>
+                           <!-- <div class="col-3">
+                                <mat-form-field class="full-width"> 
+                                    <mat-label >Tax Category</mat-label>
+                                    <mat-select formControlName="vatCategory" (valueChange)="calcTax($event)">
+                                        <mat-option *ngFor="let tax of taxArr" [value]="tax.TAX_1_PERC">
+                                            {{ tax.TAX_CATEGORY_NAME }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div> -->
+                            <div class="col-3">
+                                <mat-form-field class="full-width"> 
+                                    <mat-label >VAT Amount</mat-label>
+                                    <input type="text" formControlName="vatAmount" matInput readonly>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8"></div>
+                            <div class="col-4">
+                                <mat-form-field class="full-width"> 
+                                    <mat-label >Net Value</mat-label>
+                                    <input type="text" formControlName="netValue" matInput readonly>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <mat-dialog-actions align="end">
+                            <button class="btn btn-success" type="button" (click)="submitPrice()">Submit</button>
+                        </mat-dialog-actions>
+                    </form>
+                </ng-template>
+            </div>
 
-    </div>  
-</div>
+            <div class="col-12">
+                <ng-template #custLookupDialog 
+                style="width: 60%;">
+                    <h4 matDialogTitle>
+                        <b>Look up Customers: {{ custArr.length }}</b>
+                    </h4>
+                    <hr>
+                    <div mat-dialog-content>
+                        <table mat-table 
+                        [dataSource]="custDataSource" 
+                        class="mat-elevation-z8" 
+                        style="width: 65vw; height: 50vh;">
+
+                        <ng-container matColumnDef="PCODE">
+                            <th mat-header-cell 
+                            *matHeaderCellDef> PCode</th>
+                            <td mat-cell 
+                            *matCellDef="let cust"> {{ cust.PCODE }} </td>
+                        </ng-container> 
+                        
+                        <ng-container matColumnDef="CUST_NAME">
+                            <th mat-header-cell 
+                            *matHeaderCellDef> Name </th>
+                            <td mat-cell 
+                            *matCellDef="let cust"> {{ cust.CUST_NAME }} </td>
+                        </ng-container> 
+                        
+                        <ng-container matColumnDef="TAX_1_NO">
+                            <th mat-header-cell 
+                            *matHeaderCellDef> Tax Number </th>
+                            <td mat-cell 
+                            *matCellDef="let cust"> {{ cust.TAX_1_NO }} </td>
+                        </ng-container>
+
+                            <tr mat-header-row 
+                            *matHeaderRowDef="custDisplayedColumns"></tr>
+                            <tr mat-row 
+                            *matRowDef="let row; columns: custDisplayedColumns;  let i= index"
+                            [ngClass]="{'highlight': selectedRowIndex == i}"
+                            (click)="highlight('cust',i)"
+                            tabindex="999"
+                            (keydown.arrowdown)="arrowDownEvent('cust',selectedRowIndex)"
+                            (keydown.arrowup)="arrowUpEvent('cust',selectedRowIndex)" 
+                            (keydown.enter)="selectCustomer(custArr[selectedRowIndex])" ></tr>
+                        </table>
+                    </div>
+                    <mat-dialog-actions align="end">
+                        <button mat-button 
+                        matDialogClose="close">Close</button>
+                    </mat-dialog-actions>
+                </ng-template>
+            </div>            
+            
+            <div class="col-12">
+                <ng-template #prodLookupDialog 
+                style="width: 60%;">
+                    <h4 matDialogTitle>
+                        <b>Look up Products: {{ prodArr.length }}</b>
+                    </h4>
+                    <hr>
+                    <div mat-dialog-content>
+                        <table mat-table 
+                        [dataSource]="prodDataSource" 
+                        class="mat-elevation-z8" 
+                        style="width: 65vw; height: 50vh;">
+
+                        <ng-container matColumnDef="PCODE">
+                            <th mat-header-cell 
+                            *matHeaderCellDef> PCode</th>
+                            <td mat-cell 
+                            *matCellDef="let prod"> {{ prod.PCODE }} </td>
+                        </ng-container> 
+                        
+                        <ng-container matColumnDef="DESCRIPTION">
+                            <th mat-header-cell 
+                            *matHeaderCellDef> Description </th>
+                            <td mat-cell 
+                            *matCellDef="let prod"> {{ prod.DESCRIPTION }} </td>
+                        </ng-container> 
+                        
+                        <ng-container matColumnDef="RETAILPRICE">
+                            <th mat-header-cell 
+                            *matHeaderCellDef> Retail Price </th>
+                            <td mat-cell 
+                            *matCellDef="let prod">AED {{ prod.RETAILPRICE | number: '2.0-2' }} </td>
+                        </ng-container> 
+
+                        <ng-container matColumnDef="BARCODE">
+                            <th mat-header-cell 
+                            *matHeaderCellDef> Barcode </th>
+                            <td mat-cell 
+                            *matCellDef="let prod"> {{ prod.BARCODE }} </td>
+                        </ng-container> 
+
+                            <tr mat-header-row 
+                            *matHeaderRowDef="prodDisplayedColumns"></tr>
+                            <tr mat-row 
+                            *matRowDef="let row; columns: prodDisplayedColumns;  let i= index"
+                            [ngClass]="{'highlight': selectedRowIndex == i}"
+                            (click)="highlight('prod',i)"
+                            tabindex="999"
+                            (keydown.arrowdown)="arrowDownEvent('prod',selectedRowIndex)"
+                            (keydown.arrowup)="arrowUpEvent('prod',selectedRowIndex)" 
+                            (keydown.enter)="selectProduct(prodArr[selectedRowIndex])" ></tr>
+                        </table>
+                    </div>
+                    <mat-dialog-actions align="end">
+                        <button mat-button 
+                        matDialogClose="close">Close</button>
+                    </mat-dialog-actions>
+                </ng-template>
+            </div>
+
+            <div class="col-12">
+                <ng-template #prodDetailsDialog 
+                style="width: 60%;">
+                    <h4 matDialogTitle>
+                        <b>Look up Product: {{ prodDetails.PCODE }}</b>
+                    </h4>
+                    <hr>
+                    <div mat-dialog-content>
+                        <h5>{{ prodDetails.DESCRIPTION }}</h5>
+                        <div class="row">
+                            <div class="col-4" *ngFor="let slide of slides">
+                                <img [src]="slide.src">
+                            </div>
+                        </div>
+                    </div>
+                    <mat-dialog-actions align="end">
+                        <button mat-button 
+                        matDialogClose="close">Close</button>
+                    </mat-dialog-actions>
+                </ng-template>
+            </div>
+        </form>
+    </div>
+</div> 

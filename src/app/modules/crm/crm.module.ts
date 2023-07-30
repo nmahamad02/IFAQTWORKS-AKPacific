@@ -6,11 +6,12 @@ import { QuotationsListComponent } from './quotations/quotations-list/quotations
 import { QuotationsDetailsComponent } from './quotations/quotations-details/quotations-details.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatCardModule, MatDialogModule, MatDatepickerModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatInputModule, MatPaginatorModule, MatSelectModule, MatSortModule, MatTableModule, MatTabsModule, MatSnackBarModule } from '@angular/material';
+import { MatButtonModule, MatDividerModule, MatCardModule, MatDialogModule, MatDatepickerModule, MatFormFieldModule, MatIconModule, MatInputModule, MatPaginatorModule, MatSelectModule, MatSortModule, MatTableModule, MatTabsModule, MatSnackBarModule } from '@angular/material';
 import { ChartsModule } from 'ng2-charts';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { ContactListComponent } from './contacts/contact-list/contact-list.component';
 import { ContactDetailsComponent } from './contacts/contact-details/contact-details.component';
+import { HomeModule } from '../home/home.module';
 
 export const crmRoutes = [
   {
@@ -49,6 +50,7 @@ export const crmRoutes = [
     ContactDetailsComponent
   ],
   imports: [
+    HomeModule,
     MatIconModule,
     CommonModule,
     ChartsModule,
