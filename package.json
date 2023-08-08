@@ -49,6 +49,7 @@
     "mat-table-exporter": "^1.2.5",
     "mobile-detect": "^1.4.4",
     "moment": "^2.29.4",
+    "n": "^9.1.0",
     "ng2-charts": "^2.4.3",
     "ng2-pdf-viewer": "^6.4.1",
     "ngx-echarts": "^4.2.1",
