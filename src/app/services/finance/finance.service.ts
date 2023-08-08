@@ -143,6 +143,10 @@ export class FinanceService {
     return this.http.get(this.url + '/coa/getTaxCategory')
   }  
 
+  getUnit(){
+    return this.http.get(this.url + '/coa/getUnit')
+  }  
+
 }
 
     

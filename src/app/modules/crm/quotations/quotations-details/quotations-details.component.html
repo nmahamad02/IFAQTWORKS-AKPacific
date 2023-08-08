@@ -3,7 +3,7 @@
         <div class="visualization-heading col-12">
             <div class="heading-info row">
                 <div class="col-6">                
-                    <h3 class="heading-title">Quotation Details</h3>
+                    <h3 class="heading-title">Quotation Management</h3>
                 </div>
                 <div class="col-6">
                     <div class="row">
@@ -13,8 +13,8 @@
                             </button>
                         </div>
                         <div class="col">
-                            <button class="btn-info text-white btn btn-block btn-sm"  title="Print Quotation"> <!-- (click)="printForm()" -->
-                                <mat-icon>play_for_work</mat-icon> 
+                            <button class="btn-warning text-white btn btn-block btn-sm"  title="Print Quotation" (click)="savePDF()">
+                                <mat-icon>print</mat-icon> 
                             </button>
                         </div>
                         <div class="col">
@@ -158,17 +158,20 @@
                 </div>
             </div>
             <br>
+
             <div class="row">
                 <div class="col-12">
                     <table class="table table-borderless table-hover table-responsive-xxl" formArrayName="itemArr">
                         <thead>
                             <tr class="table-reflow" style="background-color: rgb(2, 46, 82); color: white;">
                                 <th style="width: 5%;"></th>
-                                <th style="width: 15%;">Product</th>
-                                <th style="width: 40%;">Description</th>
-                                <th style="width: 10%;">Unit</th>
-                                <th style="width: 10%;">Quantity</th>      
-                                <th style="width: 15%;">Net Value</th>
+                                <th style="width: 11%;">BOQ Ref.</th>
+                                <th style="width: 11%;">Product</th>
+                                <th style="width: 30%;">Description</th>
+                                <th style="width: 13%;">Unit</th>
+                                <th style="width: 7.5%;">Qty.</th>      
+                                <th style="width: 7.5%;">Price</th>      
+                                <th style="width: 10%;">Net Value</th>
                                 <th style="width: 5%;"></th>
                             </tr>
                         </thead>
@@ -176,6 +179,9 @@
                             <tr *ngFor="let rp of prodItem?.controls; let i = index;" [formGroupName]="i" >
                                 <td>
                                     <button class="btn btn-light" type="button" (click)="getProductDetails(i)">&#9432;</button>
+                                </td>
+                                <td>
+                                    <input class="form-control form-control-sm" type="text" formControlName="boqNo">
                                 </td>
                                 <td>
                                     <input #prodCode class="form-control form-control-sm" type="text" formControlName="prodCode" title="Press fn + F2 to open Product search" (keydown.f2)="lookupProductDetails(prodCode.value,i)">
@@ -186,16 +192,16 @@
                                 </td>
                                 <td>
                                     <select class="form-control form-control-sm" formControlName="prodUnit">
-                                        <option value="PCS"> Pieces </option>
-                                        <option value="NOS"> Numbers </option>
-                                        <option value="BOX"> Boxes </option>
-                                        <option value="DOZ"> Dozens </option>
-                                        <option value="LTR"> Litres </option>
-                                        <option value="PACKS"> Packs </option>
+                                        <option *ngFor="let unit of unitArr" [value]="unit.UNIT_CODE"> 
+                                            {{ unit.UNIT_DESCRIPTION }}
+                                        </option>
                                     </select>
                                 </td>
                                 <td>
                                     <input class="form-control form-control-sm" type="text" formControlName="prodQty" >
+                                </td>
+                                <td>
+                                    <input class="form-control form-control-sm" type="text" formControlName="unitPrice" >
                                 </td>
                                 <td>
                                     <input class="form-control form-control-sm" type="text" formControlName="netValue" (keydown.f2)="lookupPriceDialog(i)" (valueChange)="calibrateTotal()">
@@ -209,6 +215,7 @@
                     <button class="btn btn-success" type="button" (click)="addProductItem()">&#43;</button>
                 </div>
             </div>
+
             <hr>
             <div class="row">
                 <div class="col-12">
@@ -236,6 +243,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-12">
                 <ng-template #priceLookUpDialog  style="width: 80%;">
                     <h3 matDialogTitle>
@@ -244,10 +252,10 @@
                     <hr>
                     <form [formGroup]="valueForm" class="form-container">
                         <div class="row">
-                            <div class="col-2">
+                            <div class="col-3">
                                 <mat-form-field class="full-width"> 
-                                    <mat-label >Index</mat-label>
-                                    <input type="text" formControlName="index" matInput readonly>
+                                    <mat-label >Remarks</mat-label>
+                                    <input type="text" formControlName="remarks" matInput readonly>
                                 </mat-form-field>
                             </div>
                             <div class="col-4">
@@ -256,7 +264,7 @@
                                     <input type="text" formControlName="prodCode" matInput readonly>
                                 </mat-form-field>
                             </div>
-                            <div class="col-6">
+                            <div class="col">
                                 <mat-form-field class="full-width"> 
                                     <mat-label >Product Description</mat-label>
                                     <input type="text" formControlName="prodDesc" matInput readonly>
@@ -267,13 +275,13 @@
                             <div class="col-4">
                                 <mat-form-field class="full-width"> 
                                     <mat-label >Quantity</mat-label>
-                                    <input type="text" formControlName="quantity" matInput>
+                                    <input type="text" formControlName="quantity" matInput (change)="calcPrice()">
                                 </mat-form-field>
                             </div>
                             <div class="col-4">
                                 <mat-form-field class="full-width"> 
                                     <mat-label >Unit Price</mat-label>
-                                    <input type="text" formControlName="unitPrice" matInput>
+                                    <input type="text" formControlName="unitPrice" matInput (change)="calcPrice()">
                                 </mat-form-field>
                             </div>
                             <div class="col-4">
@@ -284,43 +292,42 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-3">
+                            <div class="col-4">
                                 <mat-form-field class="full-width"> 
                                     <mat-label >Discount %</mat-label>
                                     <input type="text" formControlName="discPercentage" matInput (change)="calcDiscount()">
                                 </mat-form-field>
                             </div>
-                            <div class="col-3">
+                            <div class="col-4">
                                 <mat-form-field class="full-width"> 
                                     <mat-label >Discount Amount</mat-label>
                                     <input type="text" formControlName="discount" matInput readonly>
                                 </mat-form-field>
                             </div>
-                            <div class="col-3">
+                            <div class="col-4">
                                 <mat-form-field class="full-width"> 
                                     <mat-label >Amount after discount</mat-label>
                                     <input type="text" formControlName="amount" matInput readonly>
                                 </mat-form-field>
                             </div>
-                           <!-- <div class="col-3">
+                        </div>
+                        <div class="row">
+                           <div class="col-4">
                                 <mat-form-field class="full-width"> 
                                     <mat-label >Tax Category</mat-label>
-                                    <mat-select formControlName="vatCategory" (valueChange)="calcTax($event)">
-                                        <mat-option *ngFor="let tax of taxArr" [value]="tax.TAX_1_PERC">
+                                    <mat-select (valueChange)="calcTax($event)">
+                                        <mat-option *ngFor="let tax of taxArr" [value]="tax">
                                             {{ tax.TAX_CATEGORY_NAME }}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
-                            </div> -->
-                            <div class="col-3">
+                            </div>
+                            <div class="col-4">
                                 <mat-form-field class="full-width"> 
                                     <mat-label >VAT Amount</mat-label>
                                     <input type="text" formControlName="vatAmount" matInput readonly>
                                 </mat-form-field>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-8"></div>
                             <div class="col-4">
                                 <mat-form-field class="full-width"> 
                                     <mat-label >Net Value</mat-label>
@@ -472,3 +479,53 @@
         </form>
     </div>
 </div> 
+
+
+<table class="table table-hover table-responsive-xxl table-bordered" id="prodTable" #prodTable style="width: 100%;">
+    <thead>
+        <tr class="table-reflow">
+            <th>S. N</th>
+            <th>BOQ Ref.</th>
+            <th>Product Code</th>
+            <th>Description</th>
+            <th>Image</th>
+            <th>Qty</th>      
+            <th>Price (AED)</th>      
+            <th>Amount (AED)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let prod of prodDetailsArr; let i = index">
+            <td>{{ i+1 }}</td>
+            <td>{{ prod.boqNo }}</td>
+            <td>{{ prod.prodCode }}</td>
+            <td>{{ prod.prodDesc }}</td>
+            <td><img [src]="'https://ifaqtworks-akpacific.s3.me-south-1.amazonaws.com/images/'+prod.prodImg" style="height: 100%;"></td>
+            <td>{{ prod.prodQty }}</td>
+            <td>{{ prod.unitPrice | number: '2.2'}}</td>
+            <td>{{ prod.netValue | number: '2.2'}}</td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="7">
+                <p style="float: right;">TOTAL AMOUNT (AED)</p><br>
+                <p style="float: right;">TOTAL DISCOUNT (AED)</p><br>
+                <p style="float: right;">TOTAL VAT (AED)</p><br>
+                <p style="float: right;">GRAND TOTAL INCLUDING VAT (AED)</p>           
+
+            </th>
+            <th>
+                {{ mQtnTotal | number: '2.2'}}<br>
+                {{ mQtnDisc | number: '2.2'}}<br>
+                {{ mQtnVAT | number: '2.2'}}<br>
+                {{ mQtnGTotal | number: '2.2'}}
+            </th>
+        </tr>
+        <tr>
+            <th colspan="8">
+                <p style="float: centre;">AMOUNT AED {{ this.mQtnNumToWords.toUpperCase() }} ONLY</p>
+            </th>
+        </tr>                
+    </tfoot>
+</table>

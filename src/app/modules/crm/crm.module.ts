@@ -6,7 +6,8 @@ import { QuotationsListComponent } from './quotations/quotations-list/quotations
 import { QuotationsDetailsComponent } from './quotations/quotations-details/quotations-details.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatDividerModule, MatCardModule, MatDialogModule, MatDatepickerModule, MatFormFieldModule, MatIconModule, MatInputModule, MatPaginatorModule, MatSelectModule, MatSortModule, MatTableModule, MatTabsModule, MatSnackBarModule } from '@angular/material';
+import { MatButtonModule, MatDividerModule, MatCardModule, MatDialogModule, MatDatepickerModule, MatFormFieldModule, MatIconModule, MatInputModule, MatPaginatorModule, MatSelectModule, MatSortModule, MatTableModule, MatTabsModule, MatSnackBarModule, DateAdapter, MAT_DATE_FORMATS} from '@angular/material';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { ChartsModule } from 'ng2-charts';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { ContactListComponent } from './contacts/contact-list/contact-list.component';
@@ -71,6 +72,9 @@ export const crmRoutes = [
     PdfViewerModule,
     ReactiveFormsModule,
     RouterModule.forChild(crmRoutes)
+  ],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
   ]
 })
 export class CrmModule { }

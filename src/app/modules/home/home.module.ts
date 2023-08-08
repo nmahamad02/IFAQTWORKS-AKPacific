@@ -64,7 +64,8 @@ export const homeRoutes = [
     CarouselComponent
   ],
   providers: [
-    ThemeService
+    ThemeService,
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }
   ]
 })
 export class HomeModule { }
