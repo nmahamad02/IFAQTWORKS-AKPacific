@@ -14,7 +14,6 @@ import autoTable from 'jspdf-autotable';
 import { formatNumber } from '@angular/common';
 import { toBase64String } from '@angular/compiler/src/output/source_map';
 
-
 @Component({
   selector: 'app-quotations-details',
   templateUrl: './quotations-details.component.html',
@@ -345,16 +344,32 @@ export class QuotationsDetailsComponent implements OnInit {
         if (data.column.index === 4 && data.cell.section === 'body') {
           var td = data.cell.raw as HTMLTableCellElement;
           console.log(td)
+          
           var image = new Image();
           image = td.getElementsByTagName('img')[0];
-          console.log(image.src)
-          //img.src = 'image-url';
-          var dim = data.cell.height - data.cell.padding('vertical');
+          var dimV = data.cell.height - data.cell.padding('vertical');
+          var dimH = data.cell.width - data.cell.padding('horizontal');
           var textPos = data.cell.getTextPos();
-          doc.addImage(image.src, 'png', textPos.x,  textPos.y, dim, dim);  
-          image.onload = () => {
-            // await for the image to be fully loaded
-          };
+
+          image.setAttribute('crossOrigin', 'anonymous');
+
+          function getBase64Image(img) {
+            var canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            var ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0);
+            var dataURL = canvas.toDataURL("image/jpeg");
+            return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+          }
+
+          image.onload = function(){
+            var dataURI = getBase64Image(image);
+            console.log(dataURI)
+            return dataURI;
+          }
+        
+          doc.addImage(image.src, 'jpeg', textPos.x,  textPos.y, dimH, dimV);  
         }
       },
       columnStyles: {
@@ -362,7 +377,7 @@ export class QuotationsDetailsComponent implements OnInit {
       //  1: {halign: 'left', cellWidth: 15,},
       //  2: {halign: 'right', cellWidth: 15,},
       //  3: {halign: 'right', cellWidth: 100,},
-        4: {cellWidth: 75,},
+        4: {cellWidth: 100,},
       //  5: {halign: 'right', cellWidth: 50,},
       //  6: {halign: 'right', cellWidth: 50,},
       //  7: {halign: 'right', cellWidth: 50,}
@@ -452,6 +467,8 @@ export class QuotationsDetailsComponent implements OnInit {
   
     return doc;
   }
+
+
 
   lookupPriceDialog(index: number) {
     const data = this.quotForm.value

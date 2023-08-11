@@ -1,0 +1,1 @@
+{"ast":null,"code":"export const LocationColumns = [{\n  key: 'LOCATIONID',\n  type: 'text',\n  label: 'Location ID',\n  required: true\n}, {\n  key: 'LOCATIONNAME',\n  type: 'text',\n  label: 'Name'\n}, {\n  key: 'isEdit',\n  type: 'isEdit',\n  label: ''\n}];","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}
