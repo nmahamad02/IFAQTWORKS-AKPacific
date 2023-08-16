@@ -89,12 +89,14 @@
                             <mat-form-field class="full-width"> 
                                 <mat-label >Remarks</mat-label>
                                 <input type="text" formControlName="remarks" matInput>
+                                <mat-hint>Payment Details</mat-hint>
                             </mat-form-field>
                         </div>
                         <div class="col-6">
                             <mat-form-field class="full-width"> 
                                 <mat-label >Description</mat-label>
                                 <input type="text" formControlName="description" matInput>
+                                <mat-hint>Delivery Details</mat-hint>
                             </mat-form-field>
                         </div>
                     </div>
@@ -255,7 +257,7 @@
                             <div class="col-3">
                                 <mat-form-field class="full-width"> 
                                     <mat-label >Remarks</mat-label>
-                                    <input type="text" formControlName="remarks" matInput readonly>
+                                    <input #option type="text" formControlName="remarks" matInput (focusout)="setOption(option.value)">
                                 </mat-form-field>
                             </div>
                             <div class="col-4">
@@ -499,8 +501,8 @@
             <td>{{ i+1 }}</td>
             <td>{{ prod.boqNo }}</td>
             <td>{{ prod.prodCode }}</td>
-            <td>{{ prod.prodDesc }}</td>
-            <td><img [src]="'https://ifaqtworks-akpacific.s3.me-south-1.amazonaws.com/images/'+prod.prodImg" style="height: 100%;"></td>
+            <td>{{ prod.prodDesc }}<br><br>{{ prod.remarks }}</td>
+            <td><img [src]="'https://ifaqtworks-akpacific.s3.me-south-1.amazonaws.com/images/'+prod.prodImg" style="width: 100%; height: 100%; object-fit: cover"></td>
             <td>{{ prod.prodQty }}</td>
             <td>{{ prod.unitPrice | number: '2.2'}}</td>
             <td>{{ prod.netValue | number: '2.2'}}</td>

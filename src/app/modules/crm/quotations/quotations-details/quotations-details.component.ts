@@ -105,7 +105,6 @@ export class QuotationsDetailsComponent implements OnInit {
       netValue: new FormControl('', [ Validators.required]),
       remarks: new FormControl('', [ Validators.required]),
     });
-    
   }
 
   ngOnInit() {
@@ -233,7 +232,8 @@ export class QuotationsDetailsComponent implements OnInit {
                 prodQty: resp.recordset[i].TOTQTY,
                 prodUnit: resp.recordset[i].UNITTYPE,
                 unitPrice: resp.recordset[i].PRICE,
-                netValue: resp.recordset[i].AMOUNT
+                netValue: resp.recordset[i].AMOUNT,
+                remarks: resp.recordset[i].DESC1
               }
               this.prodDetailsArr.push(prodDet)
             })
@@ -280,152 +280,274 @@ export class QuotationsDetailsComponent implements OnInit {
   }
 
   refreshForm() {
-
+    location.reload()
   }
 
   public savePDF(): void {  
     console.log(this.prodDetailsArr)
-    const data = this.quotForm.value;
-    var doc = new jsPDF("portrait", "px", "a4");
-    doc.setFontSize(16)
-    doc.setFont('Helvetica','bold');
-    doc.text('QUOTATION',10,87);
-    doc.setFontSize(12);
-    doc.text(`Ref: ${data.quotNo}`,330,86);
-    doc.line(5, 92, 440, 92); 
-    doc.text(`Date: ${data.quotDate}`,10,103);
-    doc.line(5, 75, 5, 109); 
-    doc.line(305, 75, 305, 109); 
-    doc.line(440, 75, 440, 109); 
-    doc.text(`VAT No: 100339666800003`,310,103);
-    doc.line(5, 109, 440, 109);
-    doc.text(`M/s. ${data.custName},`,10,120);
-    doc.setFont('Helvetica','normal');
-    doc.text(`${data.custAdd1}`,10,130);
-    doc.text(`${data.custAdd2}, ${data.custAdd3}`,10,140);
-    doc.text(`${data.custPhone1}, ${data.custPhone2}`,10,150);
-    doc.text(`${data.custEmail}`,10,160);
-    doc.text(`Dear ${this.custDetails.NAME},`,10,175);
-    doc.text(`Thank you for your valuable enquiry, please find below our discounted price for the following products.`,10,185);
-    //doc.line(5, 190, 440, 190);
-    doc.setFont('Helvetica','bold');
-    doc.text(`PROJECT:                              ${data.subject}`,10,205);
-    //doc.line(5, 205, 440, 205);
-    autoTable(doc, { 
-      html: '#prodTable',
-      startY: 210,    
-      bodyStyles: {
-        minCellHeight: 75
-      },                
-      theme: 'plain',
-      tableLineColor: [105, 105, 105],
-      tableLineWidth: 0.15,
-      rowPageBreak: 'avoid',
-      showFoot: 'lastPage',
-      margin: {
-        left: 5,
-        right: 7,
-        bottom: 26,
-        top: 75
-      },
-      willDrawCell: function(data) {
-        doc.setDrawColor(105, 105, 105); // set the border color
-        doc.setLineWidth(0.15); // set the border with
-        // draw bottom border
-        doc.line(data.cell.x,data.cell.y + data.cell.height,data.cell.x + data.cell.width,data.cell.y + data.cell.height);
-        // draw top border
-        doc.line(data.cell.x + data.cell.width,data.cell.y,data.cell.x,data.cell.y);
-        // draw left border
-        // doc.line(data.cell.x,data.cell.y + data.cell.height,data.cell.x,data.cell.y);
-        // draw right border
-        // doc.line(data.cell.x + data.cell.width,data.cell.y,data.cell.x + data.cell.width,data.cell.y + data.cell.height);
-      },
-      didDrawCell: function(data) {
-        if (data.column.index === 4 && data.cell.section === 'body') {
-          var td = data.cell.raw as HTMLTableCellElement;
-          console.log(td)
-          
-          var image = new Image();
-          image = td.getElementsByTagName('img')[0];
-          var dimV = data.cell.height - data.cell.padding('vertical');
-          var dimH = data.cell.width - data.cell.padding('horizontal');
-          var textPos = data.cell.getTextPos();
-
-          image.setAttribute('crossOrigin', 'anonymous');
-
-          function getBase64Image(img) {
-            var canvas = document.createElement("canvas");
-            canvas.width = img.width;
-            canvas.height = img.height;
-            var ctx = canvas.getContext("2d");
-            ctx.drawImage(img, 0, 0);
-            var dataURL = canvas.toDataURL("image/jpeg");
-            return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+    if(this.prodDetailsArr.length === 1) {
+      const data = this.quotForm.value;
+      var doc = new jsPDF("portrait", "px", "a4");
+      doc.setFontSize(16)
+      doc.setFont('Helvetica','bold');
+      doc.text('QUOTATION',10,87);
+      doc.setFontSize(12);
+      doc.text(`Ref: ${data.quotNo}`,330,86);
+      doc.line(5, 92, 440, 92); 
+      doc.text(`Date: ${data.quotDate}`,10,103);
+      doc.line(5, 75, 5, 109); 
+      doc.line(305, 75, 305, 109); 
+      doc.line(440, 75, 440, 109); 
+      doc.text(`VAT No: 100339666800003`,310,103);
+      doc.line(5, 109, 440, 109);
+      doc.text(`M/s. ${data.custName},`,10,120);
+      doc.setFont('Helvetica','normal');
+      doc.text(`${data.custAdd1}`,10,130);
+      doc.text(`${data.custAdd2}, ${data.custAdd3}`,10,140);
+      doc.text(`${data.custPhone1}, ${data.custPhone2}`,10,150);
+      doc.text(`${data.custEmail}`,10,160);
+      doc.text(`Dear ${this.custDetails.NAME},`,10,175);
+      doc.text(`Thank you for your valuable enquiry, please find below our discounted price for the following products.`,10,185);
+      doc.setFont('Helvetica','bold');
+      var detArr= [];
+      for(let i=0; i<this.prodDetailsArr.length; i++) {
+        var tempArr = [];
+        tempArr.push(i+1);
+        tempArr.push(this.prodDetailsArr[i].boqNo);
+        tempArr.push(this.prodDetailsArr[i].prodCode);
+        tempArr.push(this.prodDetailsArr[i].prodDesc);
+        tempArr.push('https://ifaqtworks-akpacific.s3.me-south-1.amazonaws.com/images/'+this.prodDetailsArr[i].prodImg);
+        tempArr.push(this.prodDetailsArr[i].prodQty);
+        tempArr.push(formatNumber(this.prodDetailsArr[i].unitPrice, this.locale,'1.2-2'));
+        tempArr.push(formatNumber(this.prodDetailsArr[i].netValue, this.locale,'1.2-2'));
+        detArr.push(tempArr);
+      }
+      autoTable(doc, { 
+        html: '#prodTable',
+        startY: 190,    
+        bodyStyles: {
+          minCellHeight: 75
+        },                
+        theme: 'plain',
+        tableLineColor: [105, 105, 105],
+        tableLineWidth: 0.15,
+        rowPageBreak: 'avoid',
+        showFoot: 'lastPage',
+        margin: {
+          left: 5,
+          right: 7,
+          bottom: 26,
+          top: 75
+        },
+        willDrawCell: function(data) {
+          doc.setDrawColor(105, 105, 105); // set the border color
+          doc.setLineWidth(0.15); // set the border with
+          // draw bottom border
+          doc.line(data.cell.x,data.cell.y + data.cell.height,data.cell.x + data.cell.width,data.cell.y + data.cell.height);
+          // draw top border
+          doc.line(data.cell.x + data.cell.width,data.cell.y,data.cell.x,data.cell.y);
+          // draw left border
+          // doc.line(data.cell.x,data.cell.y + data.cell.height,data.cell.x,data.cell.y);
+          // draw right border
+          // doc.line(data.cell.x + data.cell.width,data.cell.y,data.cell.x + data.cell.width,data.cell.y + data.cell.height);
+        },
+        didDrawCell: function(data) {
+          if (data.column.index === 4 && data.cell.section === 'body') {
+            var image = new Image();
+            image.crossOrigin = "Anonymous";
+            var imageSrc = detArr[data.row.index][data.column.dataKey];
+            image.src = imageSrc + '?t=' + new Date().getTime();
+            console.log(image.src);
+            var dimV = data.cell.height - data.cell.padding('vertical');
+            var dimH = data.cell.width - data.cell.padding('horizontal');
+            var textPos = data.cell.getTextPos();
+            doc.addImage(image.src, 'JPEG', textPos.x,  textPos.y, dimH, dimV);
           }
-
-          image.onload = function(){
-            var dataURI = getBase64Image(image);
-            console.log(dataURI)
-            return dataURI;
+        },
+        columnStyles: {
+         // 0: {halign: 'right', cellWidth: 5,},
+        //  1: {halign: 'left', cellWidth: 15,},
+        //  2: {halign: 'right', cellWidth: 15,},
+        //  3: {halign: 'right', cellWidth: 100,},
+            4: {cellWidth: 100},
+        //  5: {halign: 'right', cellWidth: 50,},
+        //  6: {halign: 'right', cellWidth: 50,},
+        //  7: {halign: 'right', cellWidth: 50,}
+        },
+      })
+      doc.setFont('Helvetica','bold');
+      doc.text('Terms & Conditions:',10,375);
+      doc.line(5, 380, 440, 380); 
+      doc.setFont('Helvetica','normal');
+      doc.text(`Validity`,10,395);
+      doc.text(`Availabity`,10,410);
+      doc.text(`Payment`,10,425);
+      doc.text(`Delivery`,10,440);
+      doc.text(`: ${this.formatDate(data.quotExpDate)}`,100,395);
+      doc.text(`: To be determined at the time of confirmation of the order.`,100,410);
+      doc.text(`: ${data.remarks}`,100,425);
+      doc.text(`: ${data.description}`,100,440);
+      doc.line(5, 450, 440, 450); 
+      doc.text(`We hope that the above price is competitive to you. We look forward to receive a valuable order from you.`,10,475);
+      doc.text(`Best Regards,`,10,490);
+      var sign = new Image()
+      sign.src = 'assets/pics/mansoor.jpg';
+      doc.addImage(sign.src, 'jpeg', 10, 495, 75, 50);
+      doc.text(`For,`,10,555);
+      doc.setFont('Helvetica','bold');
+      doc.text(`AK PACIFIC International Gen. Trading LLC`,10,570);
+      doc.text(`Mansoor Ahmed`,10,580);
+      doc.setFont('Helvetica','normal');
+      doc.text(`International Business Development Manager`,10,590);
+      doc.text(`Mob.No: 00971 56 164 1335/055 412 1234`,10,600);
+      
+      doc = this.addWaterMark(doc);
+      doc.save(`${data.quotNo}.pdf`);  
+      /*var string = doc.output('datauri');
+      var iframe = "<iframe width='100%' height='100%' src='" + string + "'></iframe>"
+      var x = window.open();
+      x.document.open();
+      x.document.write(iframe);
+      x.document.close();*/
+    } else {
+      const data = this.quotForm.value;
+      var doc = new jsPDF("portrait", "px", "a4");
+      doc.setFontSize(16)
+      doc.setFont('Helvetica','bold');
+      doc.text('QUOTATION',10,87);
+      doc.setFontSize(12);
+      doc.text(`Ref: ${data.quotNo}`,330,86);
+      doc.line(5, 92, 440, 92); 
+      doc.text(`Date: ${data.quotDate}`,10,103);
+      doc.line(5, 75, 5, 109); 
+      doc.line(305, 75, 305, 109); 
+      doc.line(440, 75, 440, 109); 
+      doc.text(`VAT No: 100339666800003`,310,103);
+      doc.line(5, 109, 440, 109);
+      doc.text(`M/s. ${data.custName},`,10,120);
+      doc.setFont('Helvetica','normal');
+      doc.text(`${data.custAdd1}`,10,130);
+      doc.text(`${data.custAdd2}, ${data.custAdd3}`,10,140);
+      doc.text(`${data.custPhone1}, ${data.custPhone2}`,10,150);
+      doc.text(`${data.custEmail}`,10,160);
+      doc.text(`Dear ${this.custDetails.NAME},`,10,175);
+      doc.text(`Thank you for your valuable enquiry, please find below our discounted price for the following products.`,10,185);
+      //doc.line(5, 190, 440, 190);
+      doc.setFont('Helvetica','bold');
+      doc.text(`PROJECT:                              ${data.subject}`,10,205);
+      //doc.line(5, 205, 440, 205);
+      var detArr= [];
+      for(let i=0; i<this.prodDetailsArr.length; i++) {
+        var tempArr = [];
+        tempArr.push(i+1);
+        tempArr.push(this.prodDetailsArr[i].boqNo);
+        tempArr.push(this.prodDetailsArr[i].prodCode);
+        tempArr.push(this.prodDetailsArr[i].prodDesc);
+        tempArr.push('https://ifaqtworks-akpacific.s3.me-south-1.amazonaws.com/images/'+this.prodDetailsArr[i].prodImg);
+        tempArr.push(this.prodDetailsArr[i].prodQty);
+        tempArr.push(formatNumber(this.prodDetailsArr[i].unitPrice, this.locale,'1.2-2'));
+        tempArr.push(formatNumber(this.prodDetailsArr[i].netValue, this.locale,'1.2-2'));
+        //console.log(tempArr);
+        detArr.push(tempArr);
+      }
+      autoTable(doc, { 
+        html: '#prodTable',
+        startY: 210,    
+        bodyStyles: {
+          minCellHeight: 75
+        },                
+        theme: 'plain',
+        tableLineColor: [105, 105, 105],
+        tableLineWidth: 0.15,
+        rowPageBreak: 'avoid',
+        showFoot: 'lastPage',
+        margin: {
+          left: 5,
+          right: 7,
+          bottom: 26,
+          top: 75
+        },
+        willDrawCell: function(data) {
+          doc.setDrawColor(105, 105, 105); // set the border color
+          doc.setLineWidth(0.15); // set the border with
+          // draw bottom border
+          doc.line(data.cell.x,data.cell.y + data.cell.height,data.cell.x + data.cell.width,data.cell.y + data.cell.height);
+          // draw top border
+          doc.line(data.cell.x + data.cell.width,data.cell.y,data.cell.x,data.cell.y);
+          // draw left border
+          // doc.line(data.cell.x,data.cell.y + data.cell.height,data.cell.x,data.cell.y);
+          // draw right border
+          // doc.line(data.cell.x + data.cell.width,data.cell.y,data.cell.x + data.cell.width,data.cell.y + data.cell.height);
+        },
+        didDrawCell: function(data) {
+          if (data.column.index === 4 && data.cell.section === 'body') {
+            var image = new Image();
+            image.crossOrigin = "Anonymous";
+            var imageSrc = detArr[data.row.index][data.column.dataKey];
+            image.src = imageSrc + '?t=' + new Date().getTime();
+            console.log(image.src);
+            var dimV = data.cell.height - data.cell.padding('vertical');
+            var dimH = data.cell.width - data.cell.padding('horizontal');
+            var textPos = data.cell.getTextPos();
+            doc.addImage(image.src, 'JPEG', textPos.x,  textPos.y, dimH, dimV);
           }
-        
-          doc.addImage(image.src, 'jpeg', textPos.x,  textPos.y, dimH, dimV);  
-        }
-      },
-      columnStyles: {
-       // 0: {halign: 'right', cellWidth: 5,},
-      //  1: {halign: 'left', cellWidth: 15,},
-      //  2: {halign: 'right', cellWidth: 15,},
-      //  3: {halign: 'right', cellWidth: 100,},
-        4: {cellWidth: 100,},
-      //  5: {halign: 'right', cellWidth: 50,},
-      //  6: {halign: 'right', cellWidth: 50,},
-      //  7: {halign: 'right', cellWidth: 50,}
-      },
-    })
-    doc.addPage()
-    doc.setFont('Helvetica','bold');
-    doc.text('Note:',10,85);
-    doc.setLineWidth(0.5)
-    doc.line(5, 90, 440, 90); 
-    doc.setFont('Helvetica','normal');
-    doc.text(`1.     Please note that the quantities we have considered in our Quotation are based on the BOQ that \n        was received from your site office.`,15,105);
-    doc.text(`2.     Prices are valid for above mentioned quantity. Prices may vary with any changes in the quantity.`,15,130);
-    doc.text(`3.     All the products quoted are based on sea shipment. If you require shipment through air, actual \n        air freight charges will be applicable.`,15,145);
-    doc.line(5, 165, 440, 165); 
-    doc.setFont('Helvetica','bold');
-    doc.text('Terms & Conditions:',10,175);
-    doc.line(5, 180, 440, 180); 
-    doc.setFont('Helvetica','normal');
-    doc.text(`Validity`,10,195);
-    doc.text(`Availabity`,10,210);
-    doc.text(`Payment`,10,225);
-    doc.text(`Delivery`,10,240);
-    doc.text(`: ${data.quotExpDate}`,100,195);
-    doc.text(`: To be determined at the time of confirmation of the order.`,100,210);
-    doc.text(`: ${data.remarks}`,100,225);
-    doc.text(`: ${data.description}`,100,240);
-    doc.line(5, 250, 440, 250); 
-    doc.text(`We hope that the above price is competitive to you. We look forward to receive a valuable order from you.`,10,275);
-    doc.text(`Best Regards,`,10,290);
- 
-    doc.text(`For,`,10,355);
-    doc.setFont('Helvetica','bold');
-    doc.text(`AK PACIFIC International Gen. Trading LLC`,10,370);
-    doc.text(`Mansoor Ahmed`,10,380);
-    doc.setFont('Helvetica','normal');
-    doc.text(`International Business Development Manager`,10,390);
-    doc.text(`Mob.No: 00971 56 164 1335/055 412 1234`,10,400);
-    
-    
-    doc = this.addWaterMark(doc);
-    //doc.save(`${data.quotNo}.pdf`);  
-    var string = doc.output('datauri');
-    var iframe = "<iframe width='100%' height='100%' src='" + string + "'></iframe>"
-    var x = window.open();
-    x.document.open();
-    x.document.write(iframe);
-    x.document.close();
+        },
+        columnStyles: {
+         // 0: {halign: 'right', cellWidth: 5,},
+        //  1: {halign: 'left', cellWidth: 15,},
+        //  2: {halign: 'right', cellWidth: 15,},
+        //  3: {halign: 'right', cellWidth: 100,},
+          4: {cellWidth: 100,},
+        //  5: {halign: 'right', cellWidth: 50,},
+        //  6: {halign: 'right', cellWidth: 50,},
+        //  7: {halign: 'right', cellWidth: 50,}
+        },
+      })
+      doc.addPage()
+      doc.setFont('Helvetica','bold');
+      doc.text('Note:',10,85);
+      doc.setLineWidth(0.5)
+      doc.line(5, 90, 440, 90); 
+      doc.setFont('Helvetica','normal');
+      doc.text(`1.     Please note that the quantities we have considered in our Quotation are based on the BOQ that \n        was received from your site office.`,15,105);
+      doc.text(`2.     Prices are valid for above mentioned quantity. Prices may vary with any changes in the quantity.`,15,130);
+      doc.text(`3.     All the products quoted are based on sea shipment. If you require shipment through air, actual \n        air freight charges will be applicable.`,15,145);
+      doc.line(5, 165, 440, 165); 
+      doc.setFont('Helvetica','bold');
+      doc.text('Terms & Conditions:',10,175);
+      doc.line(5, 180, 440, 180); 
+      doc.setFont('Helvetica','normal');
+      doc.text(`Validity`,10,195);
+      doc.text(`Availabity`,10,210);
+      doc.text(`Payment`,10,225);
+      doc.text(`Delivery`,10,240);
+      doc.text(`: ${this.formatDate(data.quotExpDate)}`,100,195);
+      doc.text(`: To be determined at the time of confirmation of the order.`,100,210);
+      doc.text(`: ${data.remarks}`,100,225);
+      doc.text(`: ${data.description}`,100,240);
+      doc.line(5, 250, 440, 250); 
+      doc.text(`We hope that the above price is competitive to you. We look forward to receive a valuable order from you.`,10,275);
+      doc.text(`Best Regards,`,10,290);
+      var sign = new Image()
+      sign.src = 'assets/pics/mansoor.jpg';
+      doc.addImage(sign.src, 'jpeg', 10, 295, 75, 50);
+      doc.text(`For,`,10,355);
+      doc.setFont('Helvetica','bold');
+      doc.text(`AK PACIFIC International Gen. Trading LLC`,10,370);
+      doc.text(`Mansoor Ahmed`,10,380);
+      doc.setFont('Helvetica','normal');
+      doc.text(`International Business Development Manager`,10,390);
+      doc.text(`Mob.No: 00971 56 164 1335/055 412 1234`,10,400);
+      
+      doc = this.addWaterMark(doc);
+      doc.save(`${data.quotNo}.pdf`);  
+      /*var string = doc.output('datauri');
+      var iframe = "<iframe width='100%' height='100%' src='" + string + "'></iframe>"
+      var x = window.open();
+      x.document.open();
+      x.document.write(iframe);
+      x.document.close();*/
+    }
   } 
 
   addWaterMark(doc) {
@@ -462,9 +584,9 @@ export class QuotationsDetailsComponent implements OnInit {
       doc.line(5, 75, 440, 75); 
       doc.setFont('Helvetica','normal');
       doc.setTextColor(0,0,0);
-      doc.text(`Page ${i} of ${totalPages}`,390,615);
+      doc.setFontSize(12)
+      doc.text(`Page ${i} of ${totalPages}`,390,620);
     }
-  
     return doc;
   }
 
@@ -562,6 +684,16 @@ export class QuotationsDetailsComponent implements OnInit {
       discount: discount,
       amount: gross
     })
+  }
+
+  setOption(option: string) {
+    if(option === 'OPTION') {
+      this.valueForm.patchValue({
+        value: 0
+      })
+      this.calcDiscount()
+      this.calcTax(this.taxArr[0])
+    }
   }
 
   calibrateTotal() {

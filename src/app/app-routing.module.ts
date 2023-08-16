@@ -68,11 +68,11 @@ const routes: Routes = [
   imports: [
     RouterModule.forRoot(routes, {
       // If you want to preload all lazy routes when the app loads, uncomment the following line
-      // preloadingStrategy: PreloadAllModules,
+      preloadingStrategy: PreloadAllModules,
       onSameUrlNavigation: 'reload',
       // This value is required for server-side rendering to work.
       initialNavigation: 'enabled'
-    })
+    }),
   ],
   exports: [RouterModule]
 })
