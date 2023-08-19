@@ -257,7 +257,10 @@
                             <div class="col-3">
                                 <mat-form-field class="full-width"> 
                                     <mat-label >Remarks</mat-label>
-                                    <input #option type="text" formControlName="remarks" matInput (focusout)="setOption(option.value)">
+                                    <mat-select #option formControlName="remarks" matInput (focusout)="setOption(option.value)">
+                                        <mat-option value="OPTION">Option</mat-option>
+                                        <mat-option value=" ">Quote</mat-option>
+                                    </mat-select>
                                 </mat-form-field>
                             </div>
                             <div class="col-4">

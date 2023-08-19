@@ -1,6 +1,6 @@
-import { Component, OnInit, Type } from '@angular/core';
+import { Component, OnInit, TemplateRef, Type, ViewChild } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material';
+import { MatDialog, MatSnackBar, MatTableDataSource } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { throttle } from '@swimlane/ngx-charts/release/utils';
 import { FORMERR } from 'dns';
@@ -15,6 +15,8 @@ import { UploadService } from 'src/app/services/upload/upload.service';
   styleUrls: ['./products-details.component.scss']
 })
 export class ProductsDetailsComponent implements OnInit {
+  @ViewChild('prodLookupDialog', { static: false }) prodLookupDialog!: TemplateRef<any>;
+
   currentYear = new Date().getFullYear()
 
   public prodForm: FormGroup;
@@ -27,10 +29,14 @@ export class ProductsDetailsComponent implements OnInit {
   manufacturerList: any[] = [];
   brandList: any[] = [];
   supplierList: any[] = [];
+  prodArr: any[] = [];
 
-  mainImgSrc = ''
+  selectedRowIndex: any = 0;
+
+  prodDisplayedColumns: string[] = ["PCODE", "DESCRIPTION", "RETAILPRICE", "BARCODE"];
+  prodDataSource = new MatTableDataSource(this.prodArr);
   
-  constructor(private productService: ProductsService, private route: ActivatedRoute, private lookupService: LookupService, private financeservice: FinanceService, private uploadService: UploadService, private _snackBar: MatSnackBar) { 
+  constructor(private productService: ProductsService, private route: ActivatedRoute, private lookupService: LookupService, private financeservice: FinanceService, private uploadService: UploadService, private _snackBar: MatSnackBar, private dialog: MatDialog) { 
     this.lookupService.getCategory().subscribe((res: any) => {
       this.categoryList = res;
     })
@@ -52,26 +58,38 @@ export class ProductsDetailsComponent implements OnInit {
     this.prodForm = new FormGroup({
       pcode: new FormControl('', [ Validators.required]),
       description: new FormControl('', [ Validators.required]),
-      barcode: new FormControl('', [ Validators.required]),
-      costPrice: new FormControl('', [ Validators.required]),
-      retailPrice: new FormControl('', [ Validators.required]),
-      dealerPrice: new FormControl('', [ Validators.required]),
-      categoryId: new FormControl('', [ Validators.required]),
-      subCategoryId: new FormControl('', [ Validators.required]),
-      manufacturerId: new FormControl('', [ Validators.required]),
-      supplierId: new FormControl('', [ Validators.required]),
-      qoh: new FormControl('', [ Validators.required]),
-      qoo: new FormControl('', [ Validators.required]),
-      reQty: new FormControl('', [ Validators.required]),
+      barcode: new FormControl('0000000000', [ Validators.required]),
+      costPrice: new FormControl('0.00', [ Validators.required]),
+      retailPrice: new FormControl('0.00', [ Validators.required]),
+      dealerPrice: new FormControl('0.00', [ Validators.required]),
+      categoryId: new FormControl('0', [ Validators.required]),
+      subCategoryId: new FormControl('0', [ Validators.required]),
+      manufacturerId: new FormControl('0', [ Validators.required]),
+      supplierId: new FormControl('0', [ Validators.required]),
+      qoh: new FormControl('0', [ Validators.required]),
+      qoo: new FormControl('0', [ Validators.required]),
+      reQty: new FormControl('0', [ Validators.required]),
       year: new FormControl(String(this.currentYear), [ Validators.required]),
       remarks: new FormControl('', [ Validators.required]),
-      brand: new FormControl('', [ Validators.required]),
-      model: new FormControl('', [ Validators.required]),
-      dealer: new FormControl('', [ Validators.required]),
+      brand: new FormControl('0', [ Validators.required]),
+      model: new FormControl('0', [ Validators.required]),
+      dealer: new FormControl('0', [ Validators.required]),
       locationStock: new FormArray([]),
       documents: new FormArray([]),
       images: new FormArray([]),
     });
+  }
+
+  lookupProductDetails(code: string) {
+    this.selectedRowIndex = 0;
+    let dialogRef = this.dialog.open(this.prodLookupDialog);
+    this.productService.searchProduct(code).subscribe((res: any) => {
+      console.log(res)
+      this.prodArr = res.recordset;
+      this.prodDataSource = new MatTableDataSource(this.prodArr);
+    }, (err: any) => {
+      console.log(err)
+    })
   }
 
   addLocation() {
@@ -323,22 +341,22 @@ export class ProductsDetailsComponent implements OnInit {
     this.prodForm = new FormGroup({
       pcode: new FormControl('', [ Validators.required]),
       description: new FormControl('', [ Validators.required]),
-      barcode: new FormControl('', [ Validators.required]),
-      costPrice: new FormControl('', [ Validators.required]),
-      retailPrice: new FormControl('', [ Validators.required]),
-      dealerPrice: new FormControl('', [ Validators.required]),
-      categoryId: new FormControl('', [ Validators.required]),
-      subCategoryId: new FormControl('', [ Validators.required]),
-      manufacturerId: new FormControl('', [ Validators.required]),
-      supplierId: new FormControl('', [ Validators.required]),
-      qoh: new FormControl('', [ Validators.required]),
-      qoo: new FormControl('', [ Validators.required]),
-      reQty: new FormControl('', [ Validators.required]),
+      barcode: new FormControl('0000000000', [ Validators.required]),
+      costPrice: new FormControl('0.00', [ Validators.required]),
+      retailPrice: new FormControl('0.00', [ Validators.required]),
+      dealerPrice: new FormControl('0.00', [ Validators.required]),
+      categoryId: new FormControl('0', [ Validators.required]),
+      subCategoryId: new FormControl('0', [ Validators.required]),
+      manufacturerId: new FormControl('0', [ Validators.required]),
+      supplierId: new FormControl('0', [ Validators.required]),
+      qoh: new FormControl('0', [ Validators.required]),
+      qoo: new FormControl('0', [ Validators.required]),
+      reQty: new FormControl('0', [ Validators.required]),
       year: new FormControl(String(this.currentYear), [ Validators.required]),
       remarks: new FormControl('', [ Validators.required]),
-      brand: new FormControl('', [ Validators.required]),
-      model: new FormControl('', [ Validators.required]),
-      dealer: new FormControl('', [ Validators.required]),
+      brand: new FormControl('0', [ Validators.required]),
+      model: new FormControl('0', [ Validators.required]),
+      dealer: new FormControl('0', [ Validators.required]),
       locationStock: new FormArray([]),
       documents: new FormArray([]),
       images: new FormArray([]),
@@ -363,22 +381,22 @@ export class ProductsDetailsComponent implements OnInit {
     this.prodForm = new FormGroup({
       pcode: new FormControl('', [ Validators.required]),
       description: new FormControl('', [ Validators.required]),
-      barcode: new FormControl('', [ Validators.required]),
-      costPrice: new FormControl('', [ Validators.required]),
-      retailPrice: new FormControl('', [ Validators.required]),
-      dealerPrice: new FormControl('', [ Validators.required]),
-      categoryId: new FormControl('', [ Validators.required]),
-      subCategoryId: new FormControl('', [ Validators.required]),
-      manufacturerId: new FormControl('', [ Validators.required]),
-      supplierId: new FormControl('', [ Validators.required]),
-      qoh: new FormControl('', [ Validators.required]),
-      qoo: new FormControl('', [ Validators.required]),
-      reQty: new FormControl('', [ Validators.required]),
+      barcode: new FormControl('0000000000', [ Validators.required]),
+      costPrice: new FormControl('0.00', [ Validators.required]),
+      retailPrice: new FormControl('0.00', [ Validators.required]),
+      dealerPrice: new FormControl('0.00', [ Validators.required]),
+      categoryId: new FormControl('0', [ Validators.required]),
+      subCategoryId: new FormControl('0', [ Validators.required]),
+      manufacturerId: new FormControl('0', [ Validators.required]),
+      supplierId: new FormControl('0', [ Validators.required]),
+      qoh: new FormControl('0', [ Validators.required]),
+      qoo: new FormControl('0', [ Validators.required]),
+      reQty: new FormControl('0', [ Validators.required]),
       year: new FormControl(String(this.currentYear), [ Validators.required]),
       remarks: new FormControl('', [ Validators.required]),
-      brand: new FormControl('', [ Validators.required]),
-      model: new FormControl('', [ Validators.required]),
-      dealer: new FormControl('', [ Validators.required]),
+      brand: new FormControl('0', [ Validators.required]),
+      model: new FormControl('0', [ Validators.required]),
+      dealer: new FormControl('0', [ Validators.required]),
       locationStock: new FormArray([]),
       documents: new FormArray([]),
       images: new FormArray([]),
@@ -465,6 +483,30 @@ export class ProductsDetailsComponent implements OnInit {
         })
       })
     })
+  }
+
+
+  selectProduct(prod: any) {
+    this.getData(prod.PCODE)
+    let dialogRef = this.dialog.closeAll();
+  }
+
+
+
+  highlight(type: string, index: number){
+    console.log(index);
+    if (type === "prod") {
+      if(index >= 0 && index <= this.prodArr.length - 1)
+      this.selectedRowIndex = index;
+    }
+  }
+
+  arrowUpEvent(type: string, index: number){
+   this.highlight(type, --index);
+  }
+
+  arrowDownEvent(type: string, index: number){
+    this.highlight(type, ++index);
   }
 
   goToLink(url: string) {

@@ -252,7 +252,7 @@ export class QuotationsDetailsComponent implements OnInit {
     console.log(data.quotNo)
     this.quotationService.getQuotationMaster(data.quotNo).subscribe((res: any) => {
       if(res.recordset.length === 0) {
-        this.quotationService.postQuotationMaster(data.quotNo, this.formatDate(data.quotDate),data.quotStatus,this.formatDate(data.quotExpDate),data.pcode,data.contactId,data.custName,data.custAdd1, data.custAdd2, data.custAdd3,data.custPhone1, String(this.mQtnTotal), String(this.mQtnDisc),String(this.mQtnVAT), String(this.mQtnGTotal),data.subject, data.description, data.remarks,String(this.mCYear),this.uC)
+        this.quotationService.postQuotationMaster(data.quotNo, data.quotDate,data.quotStatus,this.formatDate(data.quotExpDate),data.pcode,data.contactId,data.custName,data.custAdd1, data.custAdd2, data.custAdd3,data.custPhone1, String(this.mQtnTotal), String(this.mQtnDisc),String(this.mQtnVAT), String(this.mQtnGTotal),data.subject, data.description, data.remarks,String(this.mCYear),this.uC)
         for(let i=0; i<data.itemArr.length; i++) {
           this.quotationService.postQuotationDetails(data.quotNo,data.itemArr[i].prodDesc,data.itemArr[i].remarks,data.itemArr[i].prodQty,data.itemArr[i].prodCode,data.itemArr[i].unitPrice,data.itemArr[i].netValue,data.itemArr[i].discPercentage,data.itemArr[i].discount,data.itemArr[i].vatCategory,data.itemArr[i].vatPer,data.itemArr[i].vatAmount,data.itemArr[i].prodUnit,data.itemArr[i].boqNo,this.uC,String(this.mCYear))
         }
@@ -269,7 +269,7 @@ export class QuotationsDetailsComponent implements OnInit {
       }
     }, (err: any) => {
       console.log(data.quotNo)
-      this.quotationService.postQuotationMaster(data.quotNo, this.formatDate(data.quotDate),data.quotStatus,this.formatDate(data.quotExpDate),data.pcode,data.contactId,data.custName,data.custAdd1, data.custAdd2, data.custAdd3,data.custPhone1, String(this.mQtnTotal), String(this.mQtnDisc),String(this.mQtnVAT), String(this.mQtnGTotal),data.subject, data.description, data.remarks,String(this.mCYear),this.uC)
+      this.quotationService.postQuotationMaster(data.quotNo, data.quotDate,data.quotStatus,this.formatDate(data.quotExpDate),data.pcode,data.contactId,data.custName,data.custAdd1, data.custAdd2, data.custAdd3,data.custPhone1, String(this.mQtnTotal), String(this.mQtnDisc),String(this.mQtnVAT), String(this.mQtnGTotal),data.subject, data.description, data.remarks,String(this.mCYear),this.uC)
       for(let i=0; i<data.itemArr.length; i++) {
           this.quotationService.postQuotationDetails(data.quotNo,data.itemArr[i].prodDesc,data.itemArr[i].remarks,data.itemArr[i].prodQty,data.itemArr[i].prodCode,data.itemArr[i].unitPrice,data.itemArr[i].netValue,data.itemArr[i].discPercentage,data.itemArr[i].discount,data.itemArr[i].vatCategory,data.itemArr[i].vatPer,data.itemArr[i].vatAmount,data.itemArr[i].prodUnit,data.itemArr[i].boqNo,this.uC,String(this.mCYear))        
         }

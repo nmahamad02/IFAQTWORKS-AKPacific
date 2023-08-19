@@ -39,7 +39,7 @@
                                 <div class="col-3">
                                     <mat-form-field class="full-width">
                                         <mat-label >Product Code </mat-label>
-                                        <input matInput #pcode formControlName="pcode" matInput required
+                                        <input matInput #pcode formControlName="pcode" matInput required title="Press fn + F2 to open Product search" (keydown.f2)="lookupProductDetails(pcode.value)"
                                         (keydown.enter)="getData(pcode.value)" >
                                     </mat-form-field>
                                 </div>
@@ -338,6 +338,66 @@
                         </mat-tab>
                     </mat-tab-group>
                 </form>
+            </div>
+
+            <div class="col-12">
+                <ng-template #prodLookupDialog 
+                style="width: 60%;">
+                    <h4 matDialogTitle>
+                        <b>Look up Products: {{ prodArr.length }}</b>
+                    </h4>
+                    <hr>
+                    <div mat-dialog-content>
+                        <table mat-table 
+                        [dataSource]="prodDataSource" 
+                        class="mat-elevation-z8" 
+                        style="width: 65vw; height: 50vh;">
+
+                        <ng-container matColumnDef="PCODE">
+                            <th mat-header-cell 
+                            *matHeaderCellDef> PCode</th>
+                            <td mat-cell 
+                            *matCellDef="let prod"> {{ prod.PCODE }} </td>
+                        </ng-container> 
+                        
+                        <ng-container matColumnDef="DESCRIPTION">
+                            <th mat-header-cell 
+                            *matHeaderCellDef> Description </th>
+                            <td mat-cell 
+                            *matCellDef="let prod"> {{ prod.DESCRIPTION }} </td>
+                        </ng-container> 
+                        
+                        <ng-container matColumnDef="RETAILPRICE">
+                            <th mat-header-cell 
+                            *matHeaderCellDef> Retail Price </th>
+                            <td mat-cell 
+                            *matCellDef="let prod">AED {{ prod.RETAILPRICE | number: '2.0-2' }} </td>
+                        </ng-container> 
+
+                        <ng-container matColumnDef="BARCODE">
+                            <th mat-header-cell 
+                            *matHeaderCellDef> Barcode </th>
+                            <td mat-cell 
+                            *matCellDef="let prod"> {{ prod.BARCODE }} </td>
+                        </ng-container> 
+
+                            <tr mat-header-row 
+                            *matHeaderRowDef="prodDisplayedColumns"></tr>
+                            <tr mat-row 
+                            *matRowDef="let row; columns: prodDisplayedColumns;  let i= index"
+                            [ngClass]="{'highlight': selectedRowIndex == i}"
+                            (click)="highlight('prod',i)"
+                            tabindex="999"
+                            (keydown.arrowdown)="arrowDownEvent('prod',selectedRowIndex)"
+                            (keydown.arrowup)="arrowUpEvent('prod',selectedRowIndex)" 
+                            (keydown.enter)="selectProduct(prodArr[selectedRowIndex])" ></tr>
+                        </table>
+                    </div>
+                    <mat-dialog-actions align="end">
+                        <button mat-button 
+                        matDialogClose="close">Close</button>
+                    </mat-dialog-actions>
+                </ng-template>
             </div>
         </div>
     </div>    

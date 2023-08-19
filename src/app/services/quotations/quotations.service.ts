@@ -24,12 +24,13 @@ export class QuotationsService {
     return this.http.get(this.url + '/quot/details/' + quotno)
   }
 
-  postQuotationMaster(quotnbr: string, quotdate: string, status: string, expdate: string, pcode: string, party: string, custname: string, add1: string, add2: string, add3: string, phone1: string, total: string, discount: string, vatamt: string, gtotal: string, subject: string, description: string, remarks: string, year: string, createduser: string) {
+  postQuotationMaster(quotnbr: string, quotDate: string, status: string, expdate: string, pcode: string, party: string, custname: string, add1: string, add2: string, add3: string, phone1: string, total: string, discount: string, vatamt: string, gtotal: string, subject: string, description: string, remarks: string, year: string, createduser: string) {
+    console.log(quotDate)
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
     const newTran = {
       quotno: quotnbr,
-      quotdate: quotdate, 
+      quotdate: quotDate, 
       status: status,
       expdate: expdate,
       pcode: pcode,

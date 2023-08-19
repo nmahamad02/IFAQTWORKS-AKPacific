@@ -5,7 +5,7 @@ import { ProductsDetailsComponent } from './products/products-details/products-d
 import { RouterModule } from '@angular/router';
 import { LookupComponent } from './lookup/lookup.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatIconModule, MatTabsModule, MatFormFieldModule, MatInputModule, MatSnackBarModule, MatDatepickerModule, MatTableModule, MatButtonModule, MatCardModule, MatSelectModule, MatPaginatorModule, MatDividerModule, MatSortModule, MAT_DATE_LOCALE } from '@angular/material';
+import { MatIconModule, MatTabsModule, MatFormFieldModule, MatInputModule, MatDialogModule, MatSnackBarModule, MatDatepickerModule, MatTableModule, MatButtonModule, MatCardModule, MatSelectModule, MatPaginatorModule, MatDividerModule, MatSortModule, MAT_DATE_LOCALE } from '@angular/material';
 import { ChartsModule } from 'ng2-charts';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { HomeModule } from '../home/home.module';
@@ -43,6 +43,7 @@ export const inventoryRoutes = [
     MatTableModule,
     MatSnackBarModule,
     MatButtonModule,
+    MatDialogModule,
     MatCardModule,
     MatSelectModule,
     MatPaginatorModule,
