@@ -93,7 +93,7 @@
                                     <mat-form-field class="full-width">
                                         <mat-label>Manufacturer</mat-label>
                                         <mat-select formControlName="manufacturerId">
-                                            <mat-option *ngFor="let type of manufacturerList" [value]="type.MANUFACTURER_CD">
+                                            <mat-option *ngFor="let type of manufacturerList" [value]="type.MANUFACTURER_ID">
                                                 {{ type.MANUFACTURER_NAME }}
                                             </mat-option>
                                         </mat-select>

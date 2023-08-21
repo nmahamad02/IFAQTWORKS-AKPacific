@@ -212,23 +212,23 @@ export class ProductsDetailsComponent implements OnInit {
     const data = this.prodForm.value;
     console.log(data)
     
-    this.productService.getProduct(data.pcode,data.year).subscribe((res: any) => {
+    this.productService.getProduct(data.pcode.toUpperCase(),data.year).subscribe((res: any) => {
       if (res.recordset.length == 0) {
         console.log("insert")
-        this.productService.postProduct(data.pcode, data.description, data.subCategoryId, data.costPrice, data.retailPrice, data.barcode, data.manufacturerId, data.reQty,data.supplierId, data.qoh, data.year, data.dealerPrice, data.remarks, data.qoo, data.brand, data.model, data.dealer, '')
+        this.productService.postProduct(data.pcode.toUpperCase(), data.description, data.subCategoryId, data.costPrice, data.retailPrice, data.barcode, data.manufacturerId, data.reQty,data.supplierId, data.qoh, data.year, data.dealerPrice, data.remarks, data.qoo, data.brand, data.model, data.dealer, '')
         
         for(let i=0; i<data.locationStock.length;i++) {
-          this.productService.postProductLocations(data.pcode,data.locationStock[i].prodLocation,data.locationStock[i].prodOpeningQty,data.year)
+          this.productService.postProductLocations(data.pcode.toUpperCase(),data.locationStock[i].prodLocation,data.locationStock[i].prodOpeningQty,data.year)
         }
 
         for(let i=0; i<data.documents.length; i++) {
           this.uploadService.uploadDoc(data.documents[i].prodDocument)
-          this.productService.postProductDocuments(data.pcode, data.documents[i].prodDocumentSource,data.documents[i].prodDocumentType,'DOC')
+          this.productService.postProductDocuments(data.pcode.toUpperCase(), data.documents[i].prodDocumentSource,data.documents[i].prodDocumentType,'DOC')
         }
 
         for(let i=0; i<data.images.length; i++) {
           this.uploadService.uploadImage(data.images[i].prodImage)
-          this.productService.postProductDocuments(data.pcode, data.images[i].prodImageSource,data.images[i].prodImageType,'IMG')
+          this.productService.postProductDocuments(data.pcode.toUpperCase(), data.images[i].prodImageSource,data.images[i].prodImageType,'IMG')
         }
 
         this._snackBar.open("Data Successfully Inserted!", "OK");
@@ -238,25 +238,25 @@ export class ProductsDetailsComponent implements OnInit {
       } else {
         console.log("update")
 
-        this.productService.updateProduct(data.pcode, data.description, data.subCategoryId, data.costPrice, data.retailPrice, data.barcode, data.manufacturerId, data.reQty, data.supplierId, data.qoh, data.year, data.dealerPrice, data.remarks, data.qoo, data.brand, data.model, data.dealer, '')
+        this.productService.updateProduct(data.pcode.toUpperCase(), data.description, data.subCategoryId, data.costPrice, data.retailPrice, data.barcode, data.manufacturerId, data.reQty, data.supplierId, data.qoh, data.year, data.dealerPrice, data.remarks, data.qoo, data.brand, data.model, data.dealer, '')
         for(let i=0; i<data.locationStock.length;i++) {
-          this.productService.updateProductLocations(data.pcode,data.locationStock[i].prodLocation,data.locationStock[i].prodOpeningQty,data.year)
+          this.productService.updateProductLocations(data.pcode.toUpperCase(),data.locationStock[i].prodLocation,data.locationStock[i].prodOpeningQty,data.year)
         }
 
         this.productService.getProductDocuments(data.pcode,'DOC').subscribe((respo: any) => {
           if (respo.recordset.length === 0) {
             for(let i=0; i<data.documents.length; i++) {
               this.uploadService.uploadDoc(data.documents[i].prodDocument)
-              this.productService.postProductDocuments(data.pcode, data.documents[i].prodDocumentSource,data.documents[i].prodDocumentType,'DOC')
+              this.productService.postProductDocuments(data.pcode.toUpperCase(), data.documents[i].prodDocumentSource,data.documents[i].prodDocumentType,'DOC')
             }
           } else {
             this.productService.deleteProductDocument(data.pcode,'DOC').subscribe(() => {
               for(let i=0; i<data.documents.length; i++) {
                 if(data.documents[i].prodDocument === 'Existing'){
-                  this.productService.postProductDocuments(data.pcode, data.documents[i].prodDocumentSource,data.documents[i].prodDocumentType,'DOC')
+                  this.productService.postProductDocuments(data.pcode.toUpperCase(), data.documents[i].prodDocumentSource,data.documents[i].prodDocumentType,'DOC')
                 } else {
                   this.uploadService.uploadDoc(data.documents[i].prodDocument)
-                  this.productService.postProductDocuments(data.pcode, data.documents[i].prodDocumentSource,data.documents[i].prodDocumentType,'DOC')
+                  this.productService.postProductDocuments(data.pcode.toUpperCase(), data.documents[i].prodDocumentSource,data.documents[i].prodDocumentType,'DOC')
                 }
               }
             })
@@ -264,7 +264,7 @@ export class ProductsDetailsComponent implements OnInit {
         }, (erro: any) => {
           for(let i=0; i<data.documents.length; i++) {
             this.uploadService.uploadDoc(data.documents[i].prodDocument)
-            this.productService.postProductDocuments(data.pcode, data.documents[i].prodDocumentSource,data.documents[i].prodDocumentType,'DOC')
+            this.productService.postProductDocuments(data.pcode.toUpperCase(), data.documents[i].prodDocumentSource,data.documents[i].prodDocumentType,'DOC')
           }
         })
 
@@ -272,16 +272,16 @@ export class ProductsDetailsComponent implements OnInit {
           if (respo.recordset.length === 0) {
             for(let i=0; i<data.images.length; i++) {
               this.uploadService.uploadImage(data.images[i].prodImage)
-              this.productService.postProductDocuments(data.pcode, data.images[i].prodImageSource,data.images[i].prodImageType,'IMG')
+              this.productService.postProductDocuments(data.pcode.toUpperCase(), data.images[i].prodImageSource,data.images[i].prodImageType,'IMG')
             }
           } else {
             this.productService.deleteProductDocument(data.pcode,'IMG').subscribe(() => {
               for(let i=0; i<data.images.length; i++) {
                 if(data.images[i].prodImage == 'Existing') {
-                  this.productService.postProductDocuments(data.pcode, data.images[i].prodImageSource,data.images[i].prodImageType,'IMG')
+                  this.productService.postProductDocuments(data.pcode.toUpperCase(), data.images[i].prodImageSource,data.images[i].prodImageType,'IMG')
                 } else {
                   this.uploadService.uploadImage(data.images[i].prodImage)
-                  this.productService.postProductDocuments(data.pcode, data.images[i].prodImageSource,data.images[i].prodImageType,'IMG')  
+                  this.productService.postProductDocuments(data.pcode.toUpperCase(), data.images[i].prodImageSource,data.images[i].prodImageType,'IMG')  
                 }
               }
             })
@@ -289,13 +289,13 @@ export class ProductsDetailsComponent implements OnInit {
         }, (erro: any) => {
           for(let i=0; i<data.images.length; i++) {
             this.uploadService.uploadImage(data.images[i].prodImage)
-            this.productService.postProductDocuments(data.pcode, data.images[i].prodImageSource,data.images[i].prodImageType,'IMG')
+            this.productService.postProductDocuments(data.pcode.toUpperCase(), data.images[i].prodImageSource,data.images[i].prodImageType,'IMG')
           }
         })
       
         this._snackBar.open("Data Successfully Updated!", "OK");
         //this.refreshForm();        
-        this.getData(data.pcode);
+        this.getData(data.pcode.toUpperCase());
 
       }
     }, (err: any) => {
@@ -409,6 +409,154 @@ export class ProductsDetailsComponent implements OnInit {
       console.log(res)
       this.lookupService.getSubcategoryDetails(res.recordset[0].SUBCATEGORY_ID).subscribe((resp: any) => {
         console.log(resp)
+        if(resp.recordset.length === 0) {
+          this.prodForm.patchValue({
+            pcode: res.recordset[0].PCODE,
+            description: res.recordset[0].DESCRIPTION,
+            barcode: res.recordset[0].BARCODE,
+            costPrice: res.recordset[0].COSTPRICE,
+            retailPrice: res.recordset[0].RETAILPRICE,
+            dealerPrice: res.recordset[0].DEALERPRICE,
+            categoryId: '0',
+            subCategoryId: res.recordset[0].SUBCATEGORY_ID,
+            manufacturerId: res.recordset[0].MANUFACTURER_ID,
+            supplierId: res.recordset[0].SUPPLIER_ID,
+            qoh: res.recordset[0].QOH,
+            qoo: res.recordset[0].QOO,
+            reQty: res.recordset[0].REORDER,
+            year: res.recordset[0].YEAR,
+            remarks: res.recordset[0].REMARKS,
+            brand: res.recordset[0].DESC1,
+            model: res.recordset[0].DESC2,
+            dealer: res.recordset[0].DESC3,
+          });
+          this.productService.getLocationWiseProduct(res.recordset[0].PCODE,String(this.currentYear)).subscribe((respo: any) => {
+            console.log(respo)
+            const locStockArr = respo.recordset;
+            for(let i=0; i<locStockArr.length; i++) {
+              const loc = new FormGroup({
+                prodLocation: new FormControl(locStockArr[i].LOCATIONID, [Validators.required]),
+                prodOpeningQty: new FormControl(locStockArr[i].OPENING_QTY, [Validators.required]),
+                prodTotalIn: new FormControl(locStockArr[i].TOTAL_IN, [Validators.required]),
+                prodTotalOut: new FormControl(locStockArr[i].TOTAL_OUT, [Validators.required]),
+                prodCurrentQty: new FormControl(locStockArr[i].CURRENT_QTY, [Validators.required]),
+              });
+              this.locStock.push(loc);
+            }
+          })
+          this.productService.getProductDocuments(res.recordset[0].PCODE,'DOC').subscribe((respo: any) => {
+            console.log(respo)
+            for(let i=0; i<respo.recordset.length; i++) {
+              const docUrl = "https://ifaqtworks-akpacific.s3.me-south-1.amazonaws.com/documents/" + respo.recordset[i].DOCUMENTNAME
+              const document = new FormGroup({
+                prodDocument: new FormControl('Existing', []),
+                prodDocumentSrc: new FormControl(docUrl, []),
+                prodDocumentSource: new FormControl(respo.recordset[i].DOCUMENTNAME, []),
+                prodDocumentType: new FormControl(respo.recordset[i].DOCUMENTTYPE, []),      
+                prodDocumentUrl: new FormControl(docUrl, [])
+              });
+              this.documents.push(document)
+            }
+          })
+          this.productService.getProductDocuments(res.recordset[0].PCODE,'IMG').subscribe((respo: any) => {
+            console.log(respo)
+            if (respo.recordset.length === 0) {
+              var img = { src: "https://ifaqtworks-akpacific.s3.me-south-1.amazonaws.com/images/imgNaN.png" }
+              this.slides.push(img);
+            } else {
+              for(let i=0; i<respo.recordset.length; i++) {
+                const docUrl = "https://ifaqtworks-akpacific.s3.me-south-1.amazonaws.com/images/" + respo.recordset[i].DOCUMENTNAME
+                const image = new FormGroup({
+                  prodImage: new FormControl('Existing', []),
+                  prodImageSrc: new FormControl(docUrl, []),
+                  prodImageSource: new FormControl(respo.recordset[i].DOCUMENTNAME, []),
+                  prodImageType: new FormControl(respo.recordset[i].DOCUMENTTYPE, []),      
+                  prodImageUrl: new FormControl(docUrl, [])
+                });
+                this.images.push(image)
+                var img = { src: docUrl }
+                this.slides.push(img)
+              }
+            }
+          }, (err: any) => {
+            var img = { src: "https://ifaqtworks-akpacific.s3.me-south-1.amazonaws.com/images/imgNaN.png" }
+            this.slides.push(img);
+          })
+        } else {
+          this.prodForm.patchValue({
+            pcode: res.recordset[0].PCODE,
+            description: res.recordset[0].DESCRIPTION,
+            barcode: res.recordset[0].BARCODE,
+            costPrice: res.recordset[0].COSTPRICE,
+            retailPrice: res.recordset[0].RETAILPRICE,
+            dealerPrice: res.recordset[0].DEALERPRICE,
+            categoryId: resp.recordset[0].CATEGORY_ID,
+            subCategoryId: res.recordset[0].SUBCATEGORY_ID,
+            manufacturerId: res.recordset[0].MANUFACTURER_ID,
+            supplierId: res.recordset[0].SUPPLIER_ID,
+            qoh: res.recordset[0].QOH,
+            qoo: res.recordset[0].QOO,
+            reQty: res.recordset[0].REORDER,
+            year: res.recordset[0].YEAR,
+            remarks: res.recordset[0].REMARKS,
+            brand: res.recordset[0].DESC1,
+            model: res.recordset[0].DESC2,
+            dealer: res.recordset[0].DESC3,
+          });
+          this.productService.getLocationWiseProduct(res.recordset[0].PCODE,String(this.currentYear)).subscribe((respo: any) => {
+            console.log(respo)
+            const locStockArr = respo.recordset;
+            for(let i=0; i<locStockArr.length; i++) {
+              const loc = new FormGroup({
+                prodLocation: new FormControl(locStockArr[i].LOCATIONID, [Validators.required]),
+                prodOpeningQty: new FormControl(locStockArr[i].OPENING_QTY, [Validators.required]),
+                prodTotalIn: new FormControl(locStockArr[i].TOTAL_IN, [Validators.required]),
+                prodTotalOut: new FormControl(locStockArr[i].TOTAL_OUT, [Validators.required]),
+                prodCurrentQty: new FormControl(locStockArr[i].CURRENT_QTY, [Validators.required]),
+              });
+              this.locStock.push(loc);
+            }
+          })
+          this.productService.getProductDocuments(res.recordset[0].PCODE,'DOC').subscribe((respo: any) => {
+            console.log(respo)
+            for(let i=0; i<respo.recordset.length; i++) {
+              const docUrl = "https://ifaqtworks-akpacific.s3.me-south-1.amazonaws.com/documents/" + respo.recordset[i].DOCUMENTNAME
+              const document = new FormGroup({
+                prodDocument: new FormControl('Existing', []),
+                prodDocumentSrc: new FormControl(docUrl, []),
+                prodDocumentSource: new FormControl(respo.recordset[i].DOCUMENTNAME, []),
+                prodDocumentType: new FormControl(respo.recordset[i].DOCUMENTTYPE, []),      
+                prodDocumentUrl: new FormControl(docUrl, [])
+              });
+              this.documents.push(document)
+            }
+          })
+          this.productService.getProductDocuments(res.recordset[0].PCODE,'IMG').subscribe((respo: any) => {
+            console.log(respo)
+            if (respo.recordset.length === 0) {
+              var img = { src: "https://ifaqtworks-akpacific.s3.me-south-1.amazonaws.com/images/imgNaN.png" }
+              this.slides.push(img);
+            } else {
+              for(let i=0; i<respo.recordset.length; i++) {
+                const docUrl = "https://ifaqtworks-akpacific.s3.me-south-1.amazonaws.com/images/" + respo.recordset[i].DOCUMENTNAME
+                const image = new FormGroup({
+                  prodImage: new FormControl('Existing', []),
+                  prodImageSrc: new FormControl(docUrl, []),
+                  prodImageSource: new FormControl(respo.recordset[i].DOCUMENTNAME, []),
+                  prodImageType: new FormControl(respo.recordset[i].DOCUMENTTYPE, []),      
+                  prodImageUrl: new FormControl(docUrl, [])
+                });
+                this.images.push(image)
+                var img = { src: docUrl }
+                this.slides.push(img)
+              }
+            }
+          }, (err: any) => {
+            var img = { src: "https://ifaqtworks-akpacific.s3.me-south-1.amazonaws.com/images/imgNaN.png" }
+            this.slides.push(img);
+          })
+        }
+      }, (err: any) => {
         this.prodForm.patchValue({
           pcode: res.recordset[0].PCODE,
           description: res.recordset[0].DESCRIPTION,
@@ -416,7 +564,7 @@ export class ProductsDetailsComponent implements OnInit {
           costPrice: res.recordset[0].COSTPRICE,
           retailPrice: res.recordset[0].RETAILPRICE,
           dealerPrice: res.recordset[0].DEALERPRICE,
-          categoryId: resp.recordset[0].CATEGORY_ID,
+          categoryId: '0',
           subCategoryId: res.recordset[0].SUBCATEGORY_ID,
           manufacturerId: res.recordset[0].MANUFACTURER_ID,
           supplierId: res.recordset[0].SUPPLIER_ID,

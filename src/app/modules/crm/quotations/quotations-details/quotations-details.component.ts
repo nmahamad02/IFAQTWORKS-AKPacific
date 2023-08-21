@@ -748,6 +748,14 @@ export class QuotationsDetailsComponent implements OnInit {
     let dialogRef = this.dialog.closeAll();
   }
 
+  getProduct(code: string, index: number) {
+    this.productIndex = index;
+    this.productService.getProduct(code, String(this.mCYear)).subscribe((res: any) => {
+      console.log(res)
+      this.selectProduct(res.recordset[0])
+    })
+  }
+
   selectProduct(event: any) {
     const rowData: any = {
       prodCode: event.PCODE,
